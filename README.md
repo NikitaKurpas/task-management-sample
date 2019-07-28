@@ -1,6 +1,21 @@
 # Task Manager App
 A sample task management application
 
+## How to run
+
+Prerequisites: Node.js >= 10, npm >= 6
+
+```shell script
+npm ci # install from package-lock.json
+npm run dev # start the dev server
+```
+
+## Run tests
+
+```shell script
+npm run test
+```
+
 ## REST API
 
 - `GET /api/users` - get a list of all users

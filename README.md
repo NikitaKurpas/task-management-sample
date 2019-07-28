@@ -1,5 +1,5 @@
 # Task Manager App
-A sample task management application
+A sample task management application written in Next.js 9 and React that utilises Next's new [API routes](https://github.com/zeit/next.js#api-routes).
 
 ## How to run
 
@@ -15,6 +15,16 @@ npm run dev # start the dev server
 ```shell script
 npm run test
 ```
+
+## Folder structure
+
+- `/config` - contains config for the app (using [`config`](https://github.com/lorenwest/node-config))
+- `/middleware` - contains different middleware for use in Next's API routes
+- `/pages` - contains frontend routes and pages
+- `/pages/api` - contains API routes
+- `/services` - contains backend services that have all the business logic
+- `/types` - contains different TS type definitions
+- `/utils` - contains different utilities
 
 ## REST API
 
@@ -36,6 +46,7 @@ npm run test
 - [x] Write backend API mock
 - [ ] Write tests for the API
 - [ ] Link API to a DB
+- [ ] Optimise folder structure
 - [ ] Write frontend in React
 - [ ] Write tests for frontend
 - [ ] Update README

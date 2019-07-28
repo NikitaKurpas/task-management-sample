@@ -4,6 +4,8 @@ import { UserService, userServiceToken } from '../../../services/user'
 import { container } from 'tsyringe'
 import { Token } from '../../../types/common'
 import config from 'config'
+import { applyMiddleware } from '../../../utils/applyMiddleware'
+import handleErrors from '../../../middleware/handleErrors'
 
 const userService: UserService = container.resolve(userServiceToken)
 
@@ -14,7 +16,7 @@ const handler = handleMethods({
     const user = userService.verifyCredentials(email, password)
 
     if (!user) {
-      return res.status(401).end({
+      return res.status(401).json({
         message: 'Incorrect login credentials'
       })
     }
@@ -26,6 +28,12 @@ const handler = handleMethods({
       email: user.email
     }
     const token = jwt.sign(payload, config.get('jwtSecret'))
-    return res.status(200).end(token)
+    return res.status(200).json({
+      token
+    })
   }
 })
+
+export default applyMiddleware(
+  handleErrors()
+)(handler)

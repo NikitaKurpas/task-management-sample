@@ -8,3 +8,4 @@ A sample task management application
 - [ ] Link API to a DB
 - [ ] Write frontend in React
 - [ ] Write tests for frontend
+- [ ] Update README

@@ -21,7 +21,9 @@ const handleMethods = (methods: MethodMap): NextHandler => {
       return handler(req, res)
     } else {
       res.setHeader('Allow', allowedMethods)
-      return res.status(405).end(`Method ${method} Not Allowed`)
+      return res.status(405).json({
+        message: `Method ${method} Not Allowed`
+      })
     }
   }
 }

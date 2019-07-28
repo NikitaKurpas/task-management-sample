@@ -1,7 +1,23 @@
 # Task Manager App
+### [WIP]
 A sample task management application written in Next.js 9 and React that utilises Next's new [API routes](https://github.com/zeit/next.js#api-routes).
 
+## Used technologies
+
+- Docker
+- Node.js
+- Next.js
+- React
+
 ## How to run
+
+### Docker
+
+```shell script
+docker-compose up --build
+```
+
+### Node.js
 
 Prerequisites: Node.js >= 10, npm >= 6
 
@@ -9,6 +25,8 @@ Prerequisites: Node.js >= 10, npm >= 6
 npm ci # install from package-lock.json
 npm run dev # start the dev server
 ```
+
+In both cases the app will be available on port 3000
 
 ## Run tests
 
@@ -54,5 +72,5 @@ npm run test
 
 ## Goal of this project
 
-- Write a sample app that showcases my skills as a Node.js Backend and React Frontend developer
+- Write a sample app that showcases my skills as Full Stack JavaScript Software Engineer.
 - Experiment with Next.js 9's new features

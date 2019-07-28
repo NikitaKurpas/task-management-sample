@@ -40,3 +40,8 @@ npm run test
 - [ ] Write tests for frontend
 - [ ] Update README
 - [ ] Write OpenAPI 3 docs
+
+## Goal of this project
+
+- Write a sample app that showcases my skills as a Node.js Backend and React Frontend developer
+- Experiment with Next.js 9's new features

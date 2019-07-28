@@ -1,2 +1,10 @@
 .next/
 node_modules/
+.idea/
+
+!.idea/.gitignore
+!.idea/jsDialects.xml
+!.idea/jsLibraryMappings.xml
+!.idea/misc.xml
+!.idea/vcs.xml
+

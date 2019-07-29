@@ -1,7 +1,7 @@
 import { applyMiddleware } from '../../../utils/applyMiddleware'
-import handleErrors from '../../../middleware/handleErrors'
-import { getTaskService } from '../../../services/task'
-import handleMethods from '../../../middleware/handleMethods'
+import handleErrors from '../../../backend/middleware/handleErrors'
+import { getTaskService } from '../../../backend/services/task'
+import handleMethods from '../../../backend/middleware/handleMethods'
 
 const handler = handleMethods({
   // Get a task by id

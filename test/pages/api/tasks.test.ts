@@ -1,6 +1,6 @@
 import handler from '../../../pages/api/tasks'
 import { container } from 'tsyringe'
-import { CreateTaskDAO, TaskService } from '../../../services/task'
+import { CreateTaskDAO, TaskService } from '../../../backend/services/task'
 import { Task } from '../../../types/common'
 import { makeMockResponse, makeMockTask, makeMockUser } from '../../testUtils'
 

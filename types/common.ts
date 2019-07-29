@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Role } from '../services/user'
+import { Role } from '../backend/services/user'
 
 export type CustomNextApiRequest = NextApiRequest & {
   jwt?: Token

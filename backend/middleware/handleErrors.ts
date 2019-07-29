@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { NextHandler } from '../types/common'
+import { NextHandler } from '../../types/common'
 
 type ErrorHandler = (req: NextApiRequest, res: NextApiResponse, err: ErrorWithCode) => any
 

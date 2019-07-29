@@ -1,4 +1,4 @@
-import { Task, TaskStatus } from '../types/common'
+import { Task, TaskStatus } from '../../types/common'
 import { container } from 'tsyringe'
 // import uniqid from 'uniqid'
 // import tasks from '../pages/api/tasks'

@@ -1,6 +1,6 @@
 import handler from '../../../pages/api/users'
 import { container } from 'tsyringe'
-import { UserService } from '../../../services/user'
+import { UserService } from '../../../backend/services/user'
 import { User } from '../../../types/common'
 import { makeMockResponse, makeMockUser } from '../../testUtils'
 

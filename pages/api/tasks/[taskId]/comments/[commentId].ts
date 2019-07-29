@@ -1,8 +1,8 @@
-import { getCommentService } from '../../../../../services/comment'
+import { getCommentService } from '../../../../../backend/services/comment'
 import { applyMiddleware } from '../../../../../utils/applyMiddleware'
-import handleErrors from '../../../../../middleware/handleErrors'
-import handleMethods from '../../../../../middleware/handleMethods'
-import requiresAdmin from '../../../../../middleware/requiresAdmin'
+import handleErrors from '../../../../../backend/middleware/handleErrors'
+import handleMethods from '../../../../../backend/middleware/handleMethods'
+import requiresAdmin from '../../../../../backend/middleware/requiresAdmin'
 
 const handler = handleMethods({
   PUT: (req, res) => {

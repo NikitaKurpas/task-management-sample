@@ -65,7 +65,6 @@ npm run test
 - [x] Write backend API mock
 - [ ] Write tests for the API
 - [ ] Link API to a DB
-- [ ] Optimise folder structure
 - [ ] Write frontend in React
 - [ ] Write tests for frontend
 - [ ] Update README

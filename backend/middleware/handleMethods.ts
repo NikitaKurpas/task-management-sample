@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { NextHandler } from '../types/common'
+import { NextHandler } from '../../types/common'
 
 export type MethodMap = {
   GET?: NextHandler

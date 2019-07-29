@@ -1,4 +1,4 @@
-import { Comment } from '../types/common'
+import { Comment } from '../../types/common'
 import { container } from 'tsyringe'
 
 export interface CreateCommentDAO {

@@ -1,8 +1,8 @@
 import { applyMiddleware } from '../../utils/applyMiddleware'
-import { getUserService } from '../../services/user'
-import handleErrors from '../../middleware/handleErrors'
-import handleMethods from '../../middleware/handleMethods'
-import requiresAuth from '../../middleware/requiresAuth'
+import { getUserService } from '../../backend/services/user'
+import handleErrors from '../../backend/middleware/handleErrors'
+import handleMethods from '../../backend/middleware/handleMethods'
+import requiresAuth from '../../backend/middleware/requiresAuth'
 
 const handler = handleMethods({
   // Get all users

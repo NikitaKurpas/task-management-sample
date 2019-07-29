@@ -1,4 +1,4 @@
-import handleMethods from '../../middleware/handleMethods'
+import handleMethods from '../../backend/middleware/handleMethods'
 import { makeMockResponse } from '../testUtils'
 
 const createMockRequest = (method: string = 'GET'): any => ({

@@ -1,8 +1,8 @@
-import { getTaskService } from '../../../../services/task'
-import handleMethods from '../../../../middleware/handleMethods'
+import { getTaskService } from '../../../../backend/services/task'
+import handleMethods from '../../../../backend/middleware/handleMethods'
 import { applyMiddleware } from '../../../../utils/applyMiddleware'
-import handleErrors from '../../../../middleware/handleErrors'
-import requiresAdmin from '../../../../middleware/requiresAdmin'
+import handleErrors from '../../../../backend/middleware/handleErrors'
+import requiresAdmin from '../../../../backend/middleware/requiresAdmin'
 
 const handler = handleMethods({
   // Archive task by id

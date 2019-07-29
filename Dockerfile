@@ -9,9 +9,8 @@ COPY ./package-lock.json ./
 RUN npm ci
 
 COPY ./config ./config
-COPY ./middleware ./middleware
+COPY ./backend ./backend
 COPY ./pages ./pages
-COPY ./services ./services
 COPY ./types ./types
 COPY ./utils ./utils
 
@@ -24,10 +23,10 @@ RUN npm run build
 FROM node:12
 WORKDIR /app
 
-COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/config ./config
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/.next ./.next
 
 ENV NODE_ENV production
 ENV PORT 80

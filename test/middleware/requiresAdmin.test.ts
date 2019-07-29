@@ -1,4 +1,4 @@
-import { _testRequiresAdmin } from '../../middleware/requiresAdmin'
+import { _testRequiresAdmin } from '../../backend/middleware/requiresAdmin'
 import { makeMockResponse } from '../testUtils'
 
 const mockResponse = makeMockResponse()

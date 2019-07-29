@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi'
-import { User } from '../types/common'
+import { User } from '../../types/common'
 import { container } from 'tsyringe'
 
 export type Role = 'user' | 'administrator'

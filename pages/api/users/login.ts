@@ -1,10 +1,10 @@
-import handleMethods from '../../../middleware/handleMethods'
+import handleMethods from '../../../backend/middleware/handleMethods'
 import jwt from 'jsonwebtoken'
-import { getUserService } from '../../../services/user'
+import { getUserService } from '../../../backend/services/user'
 import { Token } from '../../../types/common'
 import config from 'config'
 import { applyMiddleware } from '../../../utils/applyMiddleware'
-import handleErrors from '../../../middleware/handleErrors'
+import handleErrors from '../../../backend/middleware/handleErrors'
 
 const handler = handleMethods({
   POST: (req, res) => {

@@ -1,7 +1,7 @@
-import { CustomNextApiRequest, NextHandler } from '../types/common'
+import { CustomNextApiRequest, NextHandler } from '../../types/common'
 import { NextApiResponse } from 'next'
 import requiresAuth from './requiresAuth'
-import { compose } from '../utils/compose'
+import { compose } from '../../utils/compose'
 
 const requiresAdmin = (handler: NextHandler) => (req: CustomNextApiRequest, res: NextApiResponse) => {
   if (!req.jwt) {

@@ -1,7 +1,7 @@
 import { applyMiddleware } from '../../../../utils/applyMiddleware'
-import handleErrors from '../../../../middleware/handleErrors'
-import { getCommentService } from '../../../../services/comment'
-import handleMethods from '../../../../middleware/handleMethods'
+import handleErrors from '../../../../backend/middleware/handleErrors'
+import { getCommentService } from '../../../../backend/services/comment'
+import handleMethods from '../../../../backend/middleware/handleMethods'
 
 const handler = handleMethods({
   GET: (req, res) => {

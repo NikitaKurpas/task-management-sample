@@ -1,5 +1,5 @@
 import { makeMockResponse, makeMockUser } from '../../../testUtils'
-import { UserService } from '../../../../services/user'
+import { UserService } from '../../../../backend/services/user'
 import handler from '../../../../pages/api/users/login'
 import { container } from 'tsyringe'
 import jwt from 'jsonwebtoken'

@@ -1,4 +1,4 @@
-import handleErrors, { makeErrorWithCode } from '../../middleware/handleErrors'
+import handleErrors, { makeErrorWithCode } from '../../backend/middleware/handleErrors'
 import { makeMockResponse } from '../testUtils'
 
 const mockRequest = {

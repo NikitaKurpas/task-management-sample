@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Status } from '../services/task'
 import { Role } from '../services/user'
 
-export type NextHandler = (req: NextApiRequest, res: NextApiResponse) => any
+export type CustomNextApiRequest = NextApiRequest & {
+  jwt?: Token
+}
+
+export type NextHandler = (req: CustomNextApiRequest, res: NextApiResponse) => any
 
 export interface Token {
   sub: string
@@ -18,9 +21,11 @@ export interface User {
   name: string
 }
 
+export type TaskStatus = 'new' | 'in progress' | 'completed' | 'archived'
+
 export interface Task {
   id: string
-  status: Status
+  status: TaskStatus
   description: string
   assignees: User[]
   createdAt: Date

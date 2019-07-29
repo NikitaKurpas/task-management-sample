@@ -1,32 +1,38 @@
-import { Task } from '../types/common'
+import { Task, TaskStatus } from '../types/common'
+import { container } from 'tsyringe'
 // import uniqid from 'uniqid'
 // import tasks from '../pages/api/tasks'
 // import { func } from 'prop-types'
 
-export type Status = 'new' | 'in progress' | 'completed' | 'archived'
-
 export interface CreateTaskDAO {
-  status: Omit<Status, 'archived'>
+  status: Exclude<TaskStatus, 'archived'>
   description: string
   assigneeIds: string[]
 }
 
 export interface UpdateTaskDAO {
-  status?: Omit<Status, 'archived'>
+  status?: Exclude<TaskStatus, 'archived'>
   description?: string
   assigneeIds?: string[]
 }
 
 export interface TaskService {
   getTasks(): Task[]
+
   getTaskById(id: string): Task
+
   getTasksForUser(userId: string): Task[]
+
   createTask(task: CreateTaskDAO): Task
+
   updateTaskById(id: string, task: UpdateTaskDAO): Task
+
   archiveTaskById(id: string): Task
 }
 
-export const taskServiceToken = Symbol('TASK_SERVICE')
+const taskServiceToken = Symbol.for('TASK_SERVICE')
+
+export const getTaskService = (): TaskService => container.resolve(taskServiceToken)
 
 // interface _InternalTask extends _Task {
 //   assignees: string[]

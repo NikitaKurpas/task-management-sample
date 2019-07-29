@@ -1,8 +1,8 @@
 import handler from '../../../pages/api/users'
 import { container } from 'tsyringe'
-import { UserService, userServiceToken } from '../../../services/user'
+import { UserService } from '../../../services/user'
 import { User } from '../../../types/common'
-import { makeMockResponse } from '../../testUtils'
+import { makeMockResponse, makeMockUser } from '../../testUtils'
 
 const testToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiYWRtaW4iOmZhbHNlfQ.U8f93oTMm8-GjTS-X3yHarvmBt21D3E49J8cN1QBoVc'
 
@@ -14,18 +14,14 @@ const mockRequest = {
   }
 } as any
 const mockResponse = makeMockResponse()
-const mockUsers: User[] = [
-  { id: '1', name: 'John Doe', role: 'user', email: 'john.doe@example.com' },
-  { id: '2', name: 'Jane Doe', role: 'administrator', email: 'jane.doe@example.com' }
-]
+const mockUsers: User[] = [makeMockUser(), makeMockUser()]
+const mockService: Partial<UserService> = {
+  getUsers: jest.fn(() => mockUsers)
+}
 
 describe('GET /users', () => {
   beforeAll(() => {
-    container.registerInstance(userServiceToken, {
-      getUsers(): User[] {
-        return mockUsers
-      }
-    } as Partial<UserService>)
+    container.registerInstance(Symbol.for('USER_SERVICE'), mockService)
   })
   afterAll(() => {
     container.reset()
@@ -37,12 +33,13 @@ describe('GET /users', () => {
       headers: {}
     }, mockResponse as any)
 
-    expect(mockResponse.json).not.toHaveBeenCalledWith(mockUsers)
+    expect(mockService.getUsers).not.toHaveBeenCalled()
   })
 
   it('should respond with all users when authorized', () => {
     handler(mockRequest, mockResponse as any)
 
+    expect(mockService.getUsers).toHaveBeenCalled()
     expect(mockResponse.json).toHaveBeenCalledWith(mockUsers)
   })
 })

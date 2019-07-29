@@ -1,5 +1,6 @@
 import Joi from '@hapi/joi'
 import { User } from '../types/common'
+import { container } from 'tsyringe'
 
 export type Role = 'user' | 'administrator'
 
@@ -21,6 +22,7 @@ export interface UpdateUserDAO {
 
 export interface UserService {
   getUsers(): User[]
+
   getUserById(id: string): User
 
   createUser(user: CreateUserDAO): User
@@ -30,4 +32,6 @@ export interface UserService {
   verifyCredentials(email: string, password: string): User | null
 }
 
-export const userServiceToken = Symbol('USER_SERVICE')
+const userServiceToken = Symbol.for('USER_SERVICE')
+
+export const getUserService = (): UserService => container.resolve(userServiceToken)

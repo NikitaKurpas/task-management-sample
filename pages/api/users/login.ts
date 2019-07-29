@@ -1,18 +1,16 @@
 import handleMethods from '../../../middleware/handleMethods'
 import jwt from 'jsonwebtoken'
-import { UserService, userServiceToken } from '../../../services/user'
-import { container } from 'tsyringe'
+import { getUserService } from '../../../services/user'
 import { Token } from '../../../types/common'
 import config from 'config'
 import { applyMiddleware } from '../../../utils/applyMiddleware'
 import handleErrors from '../../../middleware/handleErrors'
 
-const userService: UserService = container.resolve(userServiceToken)
-
 const handler = handleMethods({
   POST: (req, res) => {
     const { body: { email, password } } = req
 
+    const userService = getUserService()
     const user = userService.verifyCredentials(email, password)
 
     if (!user) {

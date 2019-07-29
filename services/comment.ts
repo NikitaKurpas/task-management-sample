@@ -1,4 +1,5 @@
 import { Comment } from '../types/common'
+import { container } from 'tsyringe'
 
 export interface CreateCommentDAO {
   authorId: string
@@ -12,9 +13,14 @@ export interface UpdateCommentDAO {
 
 export interface CommentService {
   getCommentsForTask(taskId: string): Comment[]
+
   createComment(comment: CreateCommentDAO): Comment
+
   updateCommentById(id: string, comment: UpdateCommentDAO): Comment
+
   deleteCommentById(id: string): Comment
 }
 
-export const commentServiceToken = Symbol('COMMENT_SERVICE')
+const commentServiceToken = Symbol.for('COMMENT_SERVICE')
+
+export const getCommentService = ():CommentService => container.resolve(commentServiceToken)

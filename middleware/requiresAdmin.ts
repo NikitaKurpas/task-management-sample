@@ -1,13 +1,9 @@
-import { NextHandler, Token } from '../types/common'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { CustomNextApiRequest, NextHandler } from '../types/common'
+import { NextApiResponse } from 'next'
 import requiresAuth from './requiresAuth'
 import { compose } from '../utils/compose'
 
-type ReqWithJwt = NextApiRequest & {
-  jwt?: Token
-}
-
-const requiresAdmin = (handler: NextHandler) => (req: ReqWithJwt, res: NextApiResponse) => {
+const requiresAdmin = (handler: NextHandler) => (req: CustomNextApiRequest, res: NextApiResponse) => {
   if (!req.jwt) {
     return res.status(401).json({
       message: 'Unauthenticated'
@@ -25,6 +21,6 @@ const requiresAdmin = (handler: NextHandler) => (req: ReqWithJwt, res: NextApiRe
 
 export { requiresAdmin as _testRequiresAdmin }
 
-export const isAdmin = (req: ReqWithJwt) => req.jwt && req.jwt.admin
+export const isAdmin = (req: CustomNextApiRequest) => req.jwt && req.jwt.admin
 
 export default compose(requiresAdmin, requiresAuth)

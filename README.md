@@ -75,3 +75,7 @@ npm run test
 
 - Write a sample app that showcases my skills as Full Stack JavaScript Software Engineer.
 - Experiment with Next.js 9's new features
+
+<br>
+
+You can find some of my other projects here: https://github.com/ethericlab 

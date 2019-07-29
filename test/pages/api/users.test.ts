@@ -1,8 +1,8 @@
-import handler from './users'
+import handler from '../../../pages/api/users'
 import { container } from 'tsyringe'
-import { UserService, userServiceToken } from '../../services/user'
-import { User } from '../../types/common'
-import { makeMockResponse } from '../../test/testUtils'
+import { UserService, userServiceToken } from '../../../services/user'
+import { User } from '../../../types/common'
+import { makeMockResponse } from '../../testUtils'
 
 const testToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiYWRtaW4iOmZhbHNlfQ.U8f93oTMm8-GjTS-X3yHarvmBt21D3E49J8cN1QBoVc'
 

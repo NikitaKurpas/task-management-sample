@@ -1,5 +1,5 @@
-import handleMethods from './handleMethods'
-import { makeMockResponse } from '../test/testUtils'
+import handleMethods from '../../middleware/handleMethods'
+import { makeMockResponse } from '../testUtils'
 
 const createMockRequest = (method: string = 'GET'): any => ({
   method,

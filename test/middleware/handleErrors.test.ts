@@ -1,5 +1,5 @@
-import handleErrors, { makeErrorWithCode } from './handleErrors'
-import { makeMockResponse } from '../test/testUtils'
+import handleErrors, { makeErrorWithCode } from '../../middleware/handleErrors'
+import { makeMockResponse } from '../testUtils'
 
 const mockRequest = {
   requestId: 145
@@ -13,7 +13,8 @@ it('should catch errors and by default send message in response', () => {
 
   expect(mockResponse.status).toHaveBeenCalledWith(500)
   expect(mockResponse.json).toHaveBeenCalledWith({
-    message: 'Boom!'
+    message: 'Boom!',
+    stack: expect.any(String)
   })
 })
 
@@ -24,7 +25,8 @@ it('should catch errors and use custom code in response', () => {
 
   expect(mockResponse.status).toHaveBeenCalledWith(400)
   expect(mockResponse.json).toHaveBeenCalledWith({
-    message: 'Boom!'
+    message: 'Boom!',
+    stack: expect.any(String)
   })
 })
 
@@ -49,7 +51,7 @@ it('should catch errors and use custom error handler', () => {
 
 it('should generate errors with code', () => {
   const err = makeErrorWithCode('Boom!', 404)
-  expect(err).toBe(Error)
+  expect(err).toBeInstanceOf(Error)
   expect(err.message).toBe('Boom!')
   expect(err.code).toBe(404)
 })

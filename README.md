@@ -43,6 +43,7 @@ npm run test
 - `/services` - contains backend services that have all the business logic
 - `/types` - contains different TS type definitions
 - `/utils` - contains different utilities
+- `/test` - contains test files and test utilities
 
 ## REST API
 

@@ -1,18 +1,14 @@
 import { _testRequiresAdmin } from './requiresAdmin'
+import { makeMockResponse } from '../test/testUtils'
 
-const mockResponse = {
-  status: jest.fn(() => mockResponse),
-  end: jest.fn(() => mockResponse),
-  json: jest.fn(() => mockResponse),
-  setHeader: jest.fn(() => mockResponse)
-} as any
+const mockResponse = makeMockResponse()
 
 it('should allow the handler to pass when the user is admin', () => {
   _testRequiresAdmin((req, res) => res.end('Passed!'))({
     jwt: {
       admin: true
     }
-  } as any, mockResponse)
+  } as any, mockResponse as any)
 
   expect(mockResponse.end).toHaveBeenCalledWith('Passed!')
 })
@@ -22,7 +18,7 @@ it('should not allow the handler to execute when the user is not admin', () => {
     jwt: {
       admin: false
     }
-  } as any, mockResponse)
+  } as any, mockResponse as any)
 
   expect(mockResponse.end).not.toHaveBeenCalledWith('Passed!')
   expect(mockResponse.status).toHaveBeenCalledWith(403)

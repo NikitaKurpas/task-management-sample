@@ -1,4 +1,5 @@
 import handleMethods from './handleMethods'
+import { makeMockResponse } from '../test/testUtils'
 
 const createMockRequest = (method: string = 'GET'): any => ({
   method,
@@ -6,19 +7,14 @@ const createMockRequest = (method: string = 'GET'): any => ({
 })
 
 const mockRequest = createMockRequest()
-const mockResponse = {
-  status: jest.fn(() => mockResponse),
-  end: jest.fn(() => mockResponse),
-  json: jest.fn(() => mockResponse),
-  setHeader: jest.fn(() => mockResponse)
-} as any
+const mockResponse = makeMockResponse()
 
 it('should call the respective method function based on request method', () => {
   handleMethods({
     GET: (req, res) => {
       res.end('Ok!')
     }
-  })(mockRequest, mockResponse)
+  })(mockRequest, mockResponse as any)
 
   expect(mockResponse.end).toHaveBeenCalledWith('Ok!')
 
@@ -26,7 +22,7 @@ it('should call the respective method function based on request method', () => {
     POST: (req, res) => {
       res.end('Correct!')
     }
-  })(createMockRequest('POST'), mockResponse)
+  })(createMockRequest('POST'), mockResponse as any)
 
   expect(mockResponse.end).toHaveBeenCalledWith('Correct!')
 })
@@ -41,10 +37,10 @@ it('should handle multiple request methods', () => {
     }
   })
 
-  handler(createMockRequest('POST'), mockResponse)
+  handler(createMockRequest('POST'), mockResponse as any)
   expect(mockResponse.end).toHaveBeenCalledWith('Yep!')
 
-  handler(createMockRequest('PUT'), mockResponse)
+  handler(createMockRequest('PUT'), mockResponse as any)
   expect(mockResponse.end).toHaveBeenCalledWith('Ok!')
 })
 
@@ -55,7 +51,7 @@ it('should respond with 405 and Allow header on incorrect method', () => {
     }
   })
 
-  handler(createMockRequest('POST'), mockResponse)
+  handler(createMockRequest('POST'), mockResponse as any)
   expect(mockResponse.json).toHaveBeenCalledWith({
     message: 'Method POST Not Allowed'
   })

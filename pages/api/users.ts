@@ -3,12 +3,12 @@ import { UserService, userServiceToken } from '../../services/user'
 import handleErrors from '../../middleware/handleErrors'
 import { container } from 'tsyringe'
 import handleMethods from '../../middleware/handleMethods'
-
-let userService: UserService = container.resolve(userServiceToken)
+import requiresAuth from '../../middleware/requiresAuth'
 
 const handler = handleMethods({
   // Get all users
   GET: (req, res) => {
+    let userService: UserService = container.resolve(userServiceToken)
     const users = userService.getUsers()
     res.status(200).json(users)
   }
@@ -16,5 +16,6 @@ const handler = handleMethods({
 
 
 export default applyMiddleware(
-  handleErrors()
+  handleErrors(),
+  requiresAuth
 )(handler)

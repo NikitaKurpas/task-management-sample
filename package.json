@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "dev": "next",
+    "test": "NODE_ENV=test jest",
+    "dev": "NODE_ENV=development next",
     "build": "next build",
     "start": "next start"
   },

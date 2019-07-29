@@ -1,0 +1,4 @@
+{
+  // A random string to use for JWT token signing
+  jwtSecret: "test"
+}

@@ -17,7 +17,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    // flags for tsyringe
+    // flags for tsyringe and typeorm
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },

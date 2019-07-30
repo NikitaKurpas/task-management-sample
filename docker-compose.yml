@@ -1,6 +1,36 @@
 version: '3.5'
 services:
-  worker:
-    build: ./
+  frontend:
+    build:
+      context: frontend
+    environment:
+      PORT: 3000
+  backend:
+    build:
+      context: backend
+    environment:
+      PORT: 3005
+      DB_HOST: database
+      DB_PASS: credere_interdum
+      DB_DATABASE: task_manager_db
+    depends_on:
+      - database
+  proxy:
+    image: nginx:1.17
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
-      - '3000:80'
+      - '8080:80'
+    depends_on:
+      - frontend
+      - backend
+  database:
+    image: postgres:11
+    environment:
+      POSTGRES_PASSWORD: credere_interdum
+      POSTGRES_DB: task_manager_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

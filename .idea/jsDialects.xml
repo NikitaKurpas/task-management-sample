@@ -2,7 +2,6 @@
 <project version="4">
   <component name="JSDialectsMappings">
     <file url="file://$PROJECT_DIR$" dialect="ES6" />
-    <file url="file://$PROJECT_DIR$/pages" dialect="JSX" />
-    <file url="file://$PROJECT_DIR$/pages/api" dialect="ES6" />
+    <file url="file://$PROJECT_DIR$/frontend" dialect="JSX" />
   </component>
 </project>

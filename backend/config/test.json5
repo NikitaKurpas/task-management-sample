@@ -1,0 +1,7 @@
+{
+  jwtSecret: "test",
+  db: {
+    type: 'sqlite',
+    database: ':memory:'
+  }
+}

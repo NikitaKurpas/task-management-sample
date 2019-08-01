@@ -32,7 +32,6 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: RegisterRequestDto): Promise<User> {
-    // TODO: validate body
     return this.userService.create(body);
   }
 }

@@ -33,14 +33,14 @@ describe('UserService', () => {
     userRepository = module.get<Repository<User>>(getRepositoryToken(User))
   });
 
-  it('findAll should return all users', async () => {
+  it('#findAll should return all users', async () => {
     jest.spyOn(userRepository, 'find')
       .mockImplementationOnce(async () => mockUsers)
 
     expect(await service.findAll()).toBe(mockUsers)
   })
 
-  it('findOne should find a user by id', async () => {
+  it('#findOne should find a user by id', async () => {
     jest.spyOn(userRepository, 'findOne')
       .mockImplementationOnce(async () => mockUsers[0])
 
@@ -48,7 +48,7 @@ describe('UserService', () => {
     expect(userRepository.findOne).toHaveBeenCalledWith(mockUsers[0].id)
   })
 
-  it('findOneByEmail should find a user by email', async () => {
+  it('#findOneByEmail should find a user by email', async () => {
     jest.spyOn(userRepository, 'findOne')
       .mockImplementationOnce(async () => mockUsers[0])
 
@@ -56,7 +56,7 @@ describe('UserService', () => {
     expect(userRepository.findOne).toHaveBeenCalledWith({ email: mockUsers[0].email })
   })
 
-  it('create should save a new user and hash the password', async () => {
+  it('#create should save a new user and hash the password', async () => {
     const genSaltSpy = jest.spyOn(bcrypt, 'genSalt')
     const hashSpy = jest.spyOn(bcrypt, 'hash').mockImplementationOnce(() => '5up3rh45h')
 
@@ -93,7 +93,7 @@ describe('UserService', () => {
     expect(userRepository.save).toHaveBeenCalledWith(expectedUserModel)
   })
 
-  it('create should not save a new user when another user with same email already exists', async () => {
+  it('#create should not save a new user when another user with same email already exists', async () => {
     jest.spyOn(userRepository, "findOne").mockImplementationOnce(async () => mockUsers[0])
 
     const createUserDto = {
@@ -107,7 +107,7 @@ describe('UserService', () => {
     expect(userRepository.save).not.toHaveBeenCalled()
   })
 
-  it('updateOne should return the updated user ', async () => {
+  it('#updateOne should return the updated user ', async () => {
     jest.spyOn(userRepository, 'findOne')
       .mockImplementationOnce(async () => mockUsers[0])
 
@@ -123,7 +123,7 @@ describe('UserService', () => {
     expect(userRepository.update).toHaveBeenCalledWith({ id: mockUsers[0].id }, updateFields)
   })
 
-  it('updateOne should return undefined when user is not found', async () => {
+  it('#updateOne should return undefined when user is not found', async () => {
     jest.spyOn(userRepository, 'findOne')
       .mockImplementationOnce(async () => undefined)
 

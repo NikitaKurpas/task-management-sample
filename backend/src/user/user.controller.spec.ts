@@ -32,7 +32,7 @@ describe('User Controller', () => {
     userService = module.get(UserService);
   });
 
-  it('should return an array of users', async () => {
+  it('#getUsers should return an array of users', async () => {
     jest
       .spyOn(userService, 'findAll')
       .mockImplementationOnce(async () => mockUsers);
@@ -40,7 +40,7 @@ describe('User Controller', () => {
     expect(await controller.getUsers()).toEqual(mockUsers);
   });
 
-  it('should return the currently logged in user', async () => {
+  it('#getProfile should return the currently logged in user', async () => {
     const mockRequestUser: Partial<ReqUser> = {
       id: mockUsers[0].id,
     };
@@ -55,7 +55,7 @@ describe('User Controller', () => {
     expect(userService.findOne).toHaveBeenCalledWith(mockRequest.user.id);
   });
 
-  it('should update the currently logged in user', async () => {
+  it('#updateProfile should update the currently logged in user', async () => {
     const mockRequestUser: Partial<ReqUser> = {
       id: mockUsers[0].id,
     };
@@ -83,7 +83,7 @@ describe('User Controller', () => {
     );
   });
 
-  it('should return a user by their id', async () => {
+  it('#getUserById should return a user by their id', async () => {
     jest
       .spyOn(userService, 'findOne')
       .mockImplementationOnce(async () => mockUsers[0]);
@@ -92,7 +92,7 @@ describe('User Controller', () => {
     expect(userService.findOne).toHaveBeenCalledWith(mockUsers[0].id);
   });
 
-  it('should update a user be their id', async () => {
+  it('#updateUserById should update a user be their id', async () => {
     const body = {
       name: 'New user name',
     };
@@ -113,7 +113,7 @@ describe('User Controller', () => {
     expect(userService.updateOne).toHaveBeenCalledWith(mockUsers[0].id, body);
   });
 
-  it('should throw a NotFound exception when the user is not found', async () => {
+  it('#updateUserById should throw a NotFound exception when the user is not found', async () => {
     const body = {
       name: 'New user name',
     };

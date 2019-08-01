@@ -3,6 +3,7 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { makeMockUser } from '../../test/utils/generators';
 import { ReqUser } from '../auth/auth.dto';
+import { NotFoundException } from '@nestjs/common'
 
 const makeMockUserService = (): Partial<UserService> => ({
   findAll: jest.fn(),
@@ -36,7 +37,7 @@ describe('User Controller', () => {
       .spyOn(userService, 'findAll')
       .mockImplementationOnce(async () => mockUsers);
 
-    expect(await controller.getUsers()).toBe(mockUsers);
+    expect(await controller.getUsers()).toEqual(mockUsers);
   });
 
   it('should return the currently logged in user', async () => {
@@ -50,7 +51,7 @@ describe('User Controller', () => {
       .spyOn(userService, 'findOne')
       .mockImplementationOnce(async () => mockUsers[0]);
 
-    expect(await controller.getProfile(mockRequest)).toBe(mockUsers[0]);
+    expect(await controller.getProfile(mockRequest)).toEqual(mockUsers[0]);
     expect(userService.findOne).toHaveBeenCalledWith(mockRequest.user.id);
   });
 
@@ -64,11 +65,18 @@ describe('User Controller', () => {
     const body = {
       name: 'New user name',
     };
-    jest
-      .spyOn(userService, 'findOne')
-      .mockImplementationOnce(async () => mockUsers[0]);
 
-    expect(await controller.updateProfile(mockRequest, body)).toBeUndefined();
+    jest
+      .spyOn(userService, 'updateOne')
+      .mockImplementationOnce(async (id, fields) => ({
+        ...mockUsers[0],
+        ...fields,
+      }));
+
+    expect(await controller.updateProfile(mockRequest, body)).toEqual({
+      ...mockUsers[0],
+      ...body,
+    });
     expect(userService.updateOne).toHaveBeenCalledWith(
       mockRequest.user.id,
       body,
@@ -80,7 +88,7 @@ describe('User Controller', () => {
       .spyOn(userService, 'findOne')
       .mockImplementationOnce(async () => mockUsers[0]);
 
-    expect(await controller.getUserById(mockUsers[0].id)).toBe(mockUsers[0]);
+    expect(await controller.getUserById(mockUsers[0].id)).toEqual(mockUsers[0]);
     expect(userService.findOne).toHaveBeenCalledWith(mockUsers[0].id);
   });
 
@@ -89,7 +97,29 @@ describe('User Controller', () => {
       name: 'New user name',
     };
 
-    expect(await controller.updateUserById(mockUsers[0].id, body)).toBeUndefined();
+    jest
+      .spyOn(userService, 'updateOne')
+      .mockImplementationOnce(async (id, fields) => ({
+        ...mockUsers[0],
+        ...fields,
+      }));
+
+    expect(
+      await controller.updateUserById(mockUsers[0].id, body),
+    ).toEqual({
+      ...mockUsers[0],
+      ...body
+    });
     expect(userService.updateOne).toHaveBeenCalledWith(mockUsers[0].id, body);
+  });
+
+  it('should throw a NotFound exception when the user is not found', async () => {
+    const body = {
+      name: 'New user name',
+    };
+
+    await expect(
+      controller.updateUserById(mockUsers[0].id, body),
+    ).rejects.toBeInstanceOf(NotFoundException);
   });
 });

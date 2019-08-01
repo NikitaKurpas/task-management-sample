@@ -18,8 +18,7 @@ export class UpdateUserDto {
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -53,12 +52,21 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async updateOne(id: string, user: UpdateUserDto): Promise<void> {
-    await this.userRepository.update(
-      {
-        id,
-      },
-      user,
-    );
+  async updateOne(
+    id: string,
+    fields: UpdateUserDto,
+  ): Promise<User | undefined> {
+    const user = await this.userRepository.findOne(id);
+
+    if (!user) {
+      return undefined;
+    }
+
+    await this.userRepository.update({ id }, fields);
+
+    return {
+      ...user,
+      ...fields,
+    };
   }
 }

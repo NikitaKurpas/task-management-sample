@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
+  Get, InternalServerErrorException, NotFoundException,
   Param,
   Put,
   Request,
@@ -41,8 +41,14 @@ export class UserController {
   async updateProfile(
     @Request() req,
     @Body() body: UpdateUserRequestDto,
-  ): Promise<void> {
-    return this.userService.updateOne((req.user as ReqUser).id, body);
+  ): Promise<User> {
+    const user = await this.userService.updateOne((req.user as ReqUser).id, body);
+
+    if (!user) {
+      throw new InternalServerErrorException('Unexpected state. User should exist.')
+    }
+
+    return user
   }
 
   @Get(':id')
@@ -56,7 +62,13 @@ export class UserController {
   async updateUserById(
     @Param('id') userId: string,
     @Body() body: UpdateUserRequestDto,
-  ): Promise<void> {
-    return this.userService.updateOne(userId, body);
+  ): Promise<User> {
+    const user = await this.userService.updateOne(userId, body);
+
+    if (!user) {
+      throw new NotFoundException('User does not exist.')
+    }
+
+    return user
   }
 }

@@ -8,7 +8,7 @@ export const makeMockUser = (overrides: Partial<User> = {}): User => {
     email: `user.${randomId}@example.com`,
     name: `User #${randomId}`,
     role: 'user',
-    passwordHash: '',
+    passwordHash: 'h4x0r',
     createdAt: new Date(Date.now() - getRandomInt(1000, 10000)),
     ...overrides
   })

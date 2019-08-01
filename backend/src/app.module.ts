@@ -14,7 +14,7 @@ import { RolesGuard } from './roles.guard';
       ...config.get('db'),
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-      retryDelay: 5000
+      retryDelay: 5000,
     }),
     UserModule,
     AuthModule,

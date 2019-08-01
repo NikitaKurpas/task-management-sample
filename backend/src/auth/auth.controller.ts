@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import { IsEmail, IsNotEmpty } from 'class-validator'
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class TokenResponseDto {
   readonly token: string;

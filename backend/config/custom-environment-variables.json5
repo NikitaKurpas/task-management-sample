@@ -1,5 +1,6 @@
 {
   port: 'PORT',
+  jwtSecret: 'JWT_SECRET',
   db: {
     host: 'DB_HOST',
     port: 'DB_PORT',

@@ -69,27 +69,28 @@ npm run test
 - `POST /auth/login` - generate a JWT based on email and password
 - `GET /users` - get a list of all users
 - `GET /users/:id` - get a specific user
-- `PUT /users/:id` - update a user (can only update self, if not admin)
+- `PUT /users/:id` - update a user (admins only)
 - `GET /users/me` - get currently logged in user
+- `PUT /users/me` - update currently logged in user
 - `GET /tasks` - get a list of all tasks
 - `POST /tasks` - create a new task 
 - `GET /tasks/:taskId` - get a task
 - `PUT /tasks/:taskId` - update a task
-- `POST /tasks/:taskId/archive` - archive a task (available to admins only)
+- `POST /tasks/:taskId/archive` - archive a task (admins only)
 - `GET /tasks/:taskId/comments` - get a list of all comments for the task
 - `POST /tasks/:taskId/comments` - create a comment for the task
 - `PUT /tasks/:taskId/comments/:commentId` - update a comment
-- `DELETE /tasks/:taskId/comments/:commentId` - delete a comment (available to admins only)
+- `DELETE /tasks/:taskId/comments/:commentId` - delete a comment (admins only)
 
 ## TODO
 
 - [x] Write backend API mock
-- [ ] Write tests for the API
+- [x] Write tests for the API
 - [x] Link API to a DB
 - [ ] Write frontend in React
 - [ ] Write tests for frontend
-- [ ] Update README
 - [ ] Write OpenAPI docs
+- [x] Write remaining tests for the API
 
 ## Goal of this project
 

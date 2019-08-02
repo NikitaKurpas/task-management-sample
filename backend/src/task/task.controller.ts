@@ -66,7 +66,7 @@ export class TaskController {
     const task = await this.taskService.findOne(taskId);
 
     if (!task) {
-      throw new NotFoundException('Task does not exist')
+      throw new NotFoundException('Task does not exist.')
     }
 
     return task
@@ -80,7 +80,7 @@ export class TaskController {
     let task = await this.taskService.updateOne(taskId, body)
 
     if (!task) {
-      throw new NotFoundException('Task does not exist')
+      throw new NotFoundException('Task does not exist.')
     }
 
     return task;
@@ -93,7 +93,7 @@ export class TaskController {
     let task = await this.taskService.archiveOne(taskId)
 
     if (!task) {
-      throw new NotFoundException('Task does not exist')
+      throw new NotFoundException('Task does not exist.')
     }
 
     return task;

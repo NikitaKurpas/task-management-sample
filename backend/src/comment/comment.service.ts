@@ -16,6 +16,7 @@ export class CommentService {
   constructor(
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
+    @InjectRepository(Task)
     private readonly taskRepository: Repository<Task>
   ) {}
 

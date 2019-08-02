@@ -6,9 +6,11 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Comment } from '../comment/comment.entity';
 
 export type TaskStatus = 'new' | 'in progress' | 'completed' | 'archived';
 
@@ -32,6 +34,13 @@ export class Task {
   })
   @JoinTable()
   assignees: User[];
+
+  @OneToMany(() => Comment, comment => comment.task, {
+    eager: false,
+    onDelete: 'CASCADE',
+    lazy: true,
+  })
+  comments: Promise<Comment[]>;
 
   @CreateDateColumn()
   createdAt: Date;

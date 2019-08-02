@@ -28,7 +28,9 @@ export class TaskService {
   }
 
   async findOne(id: string): Promise<Task | undefined> {
-    return this.taskRepository.findOne(id);
+    let task = await this.taskRepository.findOne(id)
+    await task.comments
+    return task;
   }
 
   async create(fields: CreateTaskDto, by: ReqUser): Promise<Task> {

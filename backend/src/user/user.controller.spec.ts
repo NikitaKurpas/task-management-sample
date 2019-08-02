@@ -3,7 +3,6 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { makeMockUser } from '../../test/utils/generators';
 import { ReqUser } from '../auth/auth.dto';
-import { NotFoundException } from '@nestjs/common'
 
 const makeMockUserService = (): Partial<UserService> => ({
   findAll: jest.fn(),
@@ -111,15 +110,5 @@ describe('User Controller', () => {
       ...body
     });
     expect(userService.updateOne).toHaveBeenCalledWith(mockUsers[0].id, body);
-  });
-
-  it('#updateUserById should throw a NotFound exception when the user is not found', async () => {
-    const body = {
-      name: 'New user name',
-    };
-
-    await expect(
-      controller.updateUserById(mockUsers[0].id, body),
-    ).rejects.toBeInstanceOf(NotFoundException);
   });
 });

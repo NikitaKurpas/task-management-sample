@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get, InternalServerErrorException, NotFoundException,
-  Param,
-  Put,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, InternalServerErrorException, Param, Put, Request, UseGuards, } from '@nestjs/common';
 import { User } from './user.entity';
 import jwt from 'jsonwebtoken';
 import { UserService } from './user.service';
@@ -63,12 +55,6 @@ export class UserController {
     @Param('id') userId: string,
     @Body() body: UpdateUserRequestDto,
   ): Promise<User> {
-    const user = await this.userService.updateOne(userId, body);
-
-    if (!user) {
-      throw new NotFoundException('User does not exist.')
-    }
-
-    return user
+    return await this.userService.updateOne(userId, body)
   }
 }

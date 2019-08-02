@@ -5,13 +5,12 @@ import { Repository } from 'typeorm'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { makeMockUser } from '../../test/utils/generators'
 import bcrypt from 'bcryptjs';
-import { ConflictException } from '@nestjs/common'
+import { ConflictException, NotFoundException } from '@nestjs/common'
 
 const makeMockRepository = (): Partial<Repository<User>> => ({
   find: jest.fn(),
   findOne: jest.fn(),
-  save: jest.fn(),
-  update: jest.fn(),
+  save: jest.fn()
 })
 
 const mockUsers = [makeMockUser(), makeMockUser()]
@@ -48,11 +47,27 @@ describe('UserService', () => {
     expect(userRepository.findOne).toHaveBeenCalledWith(mockUsers[0].id)
   })
 
+  it('#findOne should throw a NotFound exception if the user is not found', async () => {
+    jest.spyOn(userRepository, 'findOne')
+      .mockImplementationOnce(async () => undefined)
+
+    await expect(service.findOne(mockUsers[0].id)).rejects.toBeInstanceOf(NotFoundException)
+    expect(userRepository.findOne).toHaveBeenCalledWith(mockUsers[0].id)
+  })
+
   it('#findOneByEmail should find a user by email', async () => {
     jest.spyOn(userRepository, 'findOne')
       .mockImplementationOnce(async () => mockUsers[0])
 
     expect(await service.findOneByEmail(mockUsers[0].email)).toBe(mockUsers[0])
+    expect(userRepository.findOne).toHaveBeenCalledWith({ email: mockUsers[0].email })
+  })
+
+  it('#findOneByEmail should throw a NotFound exception if the user is not found', async () => {
+    jest.spyOn(userRepository, 'findOne')
+      .mockImplementationOnce(async () => undefined)
+
+    await expect(service.findOneByEmail(mockUsers[0].email)).rejects.toBeInstanceOf(NotFoundException)
     expect(userRepository.findOne).toHaveBeenCalledWith({ email: mockUsers[0].email })
   })
 
@@ -108,28 +123,31 @@ describe('UserService', () => {
   })
 
   it('#updateOne should return the updated user ', async () => {
-    jest.spyOn(userRepository, 'findOne')
-      .mockImplementationOnce(async () => mockUsers[0])
-
-    const updateFields = {
+    const fields = {
       name: 'New user name'
     }
 
-    expect(await service.updateOne(mockUsers[0].id, { name: 'New user name'})).toEqual({
+    const expected = {
       ...mockUsers[0],
-      ...updateFields
-    })
+      ...fields
+    }
+
+    jest.spyOn(userRepository, 'findOne')
+      .mockImplementationOnce(async () => mockUsers[0])
+    jest.spyOn(userRepository, 'save')
+      .mockImplementationOnce(async () => expected)
+
+    expect(await service.updateOne(mockUsers[0].id, { name: 'New user name'})).toEqual(expected)
     expect(userRepository.findOne).toHaveBeenCalledWith(mockUsers[0].id)
-    expect(userRepository.update).toHaveBeenCalledWith({ id: mockUsers[0].id }, updateFields)
+    expect(userRepository.save).toHaveBeenCalledWith(expected)
   })
 
-  it('#updateOne should return undefined when user is not found', async () => {
+  it('#updateOne should throw NotFound exception when user is not found', async () => {
     jest.spyOn(userRepository, 'findOne')
       .mockImplementationOnce(async () => undefined)
 
-
-    expect(await service.updateOne(mockUsers[0].id, { name: 'New user name'})).toBeUndefined()
+    await expect(service.updateOne(mockUsers[0].id, { name: 'New user name'})).rejects.toBeInstanceOf(NotFoundException)
     expect(userRepository.findOne).toHaveBeenCalledWith(mockUsers[0].id)
-    expect(userRepository.update).not.toHaveBeenCalled()
+    expect(userRepository.save).not.toHaveBeenCalled()
   })
 });

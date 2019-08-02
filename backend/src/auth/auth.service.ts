@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
@@ -16,10 +16,15 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<Omit<User, 'passwordHash'> | null> {
-    const user = await this.usersService.findOneByEmail(email);
+    let user: User
+    try {
+      user = await this.usersService.findOneByEmail(email);
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        return null;
+      }
 
-    if (!user) {
-      return null;
+      throw err
     }
 
     const valid = await bcrypt.compare(password, user.passwordHash);

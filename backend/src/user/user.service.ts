@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -25,27 +29,39 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  async findOne(id: string): Promise<User | undefined> {
-    return this.userRepository.findOne(id);
+  async findOne(id: string): Promise<User> {
+    let user = await this.userRepository.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException('User does not exist.');
+    }
+
+    return user;
   }
 
-  async findOneByEmail(email: string): Promise<User | undefined> {
-    return await this.userRepository.findOne({ email });
+  async findOneByEmail(email: string): Promise<User> {
+    let user = await this.userRepository.findOne({ email });
+
+    if (!user) {
+      throw new NotFoundException('User does not exist.');
+    }
+
+    return user;
   }
 
-  async create(createUserDao: CreateUserDto): Promise<User> {
-    if (await this.userRepository.findOne({ email: createUserDao.email })) {
+  async create(fields: CreateUserDto): Promise<User> {
+    if (await this.userRepository.findOne({ email: fields.email })) {
       throw new ConflictException('Email already used');
     }
 
     const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(createUserDao.password, salt);
+    const passwordHash = await bcrypt.hash(fields.password, salt);
 
     const user = new User(
       uniqid(),
-      createUserDao.email,
+      fields.email,
       passwordHash,
-      createUserDao.name,
+      fields.name,
       'user',
     );
 
@@ -59,14 +75,12 @@ export class UserService {
     const user = await this.userRepository.findOne(id);
 
     if (!user) {
-      return undefined;
+      throw new NotFoundException('User does not exist.');
     }
 
-    await this.userRepository.update({ id }, fields);
-
-    return {
+    return await this.userRepository.save({
       ...user,
       ...fields,
-    };
+    });
   }
 }

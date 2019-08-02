@@ -23,7 +23,7 @@ class UpdateTaskDto {
 
 @Controller('comments')
 @UseGuards(AuthGuard('jwt'))
-export class TaskCommentController {
+export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Put(':id')

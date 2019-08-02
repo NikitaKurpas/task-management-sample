@@ -15,6 +15,7 @@ import { RolesGuard } from './roles.guard';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
       retryDelay: 5000,
+      logging: process.env.NODE_ENV === 'development',
     }),
     UserModule,
     AuthModule,

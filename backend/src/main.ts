@@ -1,6 +1,6 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import config from 'config';
 
 async function bootstrap() {
@@ -11,6 +11,7 @@ async function bootstrap() {
       disableErrorMessages: process.env.NODE_ENV !== 'development',
     }),
   );
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()))
   await app.listen(config.get('port'));
 }
 bootstrap();

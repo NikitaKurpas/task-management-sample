@@ -5,6 +5,7 @@ import {
   Index,
   PrimaryColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer'
 
 export type UserRole = 'user' | 'administrator';
 
@@ -18,16 +19,17 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude()
   passwordHash: string;
 
-  @Column()
+  @Column({ nullable: true })
   name?: string;
 
   @Column({ enum: ['user', 'administrator'] as UserRole[] })
   role: UserRole;
 
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt: Date;
 
   constructor(
     id: string,

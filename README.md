@@ -77,6 +77,8 @@ npm run test
 - `GET /tasks/:taskId` - get a task
 - `PUT /tasks/:taskId` - update a task
 - `POST /tasks/:taskId/archive` - archive a task (admins only)
+- `PUT /tasks/:taskId/assignees/:assigneeId` - add assignee to task
+- `DELETE /tasks/:taskId/assignees/:assigneeId` - remove assignee from task
 - `GET /tasks/:taskId/comments` - get a list of all comments for the task
 - `POST /tasks/:taskId/comments` - create a comment for the task
 - `PUT /tasks/:taskId/comments/:commentId` - update a comment

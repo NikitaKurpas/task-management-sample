@@ -11,6 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Comment } from '../comment/comment.entity';
+import { Exclude } from 'class-transformer';
 
 export type TaskStatus = 'new' | 'in progress' | 'completed' | 'archived';
 
@@ -29,25 +30,26 @@ export class Task {
 
   @ManyToMany(() => User, {
     eager: true,
-    onDelete: 'CASCADE',
-    cascade: false,
+    onDelete: 'CASCADE'
   })
   @JoinTable()
   assignees: User[];
 
-  @OneToMany(() => Comment, comment => comment.task, {
+  @OneToMany(() => Comment, comment => comment._task, {
     eager: false,
     onDelete: 'CASCADE',
     lazy: true,
   })
-  comments: Promise<Comment[]>;
+  @Exclude()
+  _comments: Promise<Comment[]>;
+
+  comments: Comment[];
 
   @CreateDateColumn()
   createdAt: Date;
 
   @ManyToOne(() => User, {
-    eager: true,
-    cascade: false,
+    eager: true
   })
   createdBy: User;
 
@@ -66,5 +68,6 @@ export class Task {
     this.description = description;
     this.createdBy = createdBy;
     this.assignees = assignees;
+    this.comments = [];
   }
 }

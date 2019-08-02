@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ReqUser } from '../auth/auth.dto';
 import { Comment } from './comment.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Task } from '../task/task.entity'
 import uniqid from 'uniqid';
-import { User } from '../user/user.entity'
+import { User } from '../user/user.entity';
+import { TaskService } from '../task/task.service';
 
 class UpsertCommentDto {
   text: string;
@@ -16,8 +16,7 @@ export class CommentService {
   constructor(
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
-    @InjectRepository(Task)
-    private readonly taskRepository: Repository<Task>
+    private readonly taskService: TaskService,
   ) {}
 
   /**
@@ -31,50 +30,41 @@ export class CommentService {
     taskId: string,
     fields: UpsertCommentDto,
     by: ReqUser,
-  ): Promise<Comment | undefined> {
-    const task = await this.taskRepository.findOne(taskId)
+  ): Promise<Comment> {
+    const task = await this.taskService.findOne(taskId);
 
     if (!task) {
-      return undefined
+      throw new NotFoundException('Task does not exist.');
     }
 
-    const comment = new Comment(
-      uniqid(),
-      fields.text,
-      task,
-      { id: by.id } as User
-    )
+    const comment = new Comment(uniqid(), fields.text, task, {
+      id: by.id,
+    } as User);
 
-    await this.commentRepository.insert(comment)
-
-    return this.commentRepository.preload(comment)
+    return await this.commentRepository.save(comment);
   }
 
   async updateOne(
     commentId: string,
     fields: UpsertCommentDto,
   ): Promise<Comment | undefined> {
-    const comment = await this.commentRepository.findOne(commentId)
+    const comment = await this.commentRepository.findOne(commentId);
 
     if (!comment) {
-      return undefined
+      throw new NotFoundException('Comment does not exist.');
     }
 
-    await this.commentRepository.update({
-      id: commentId
-    }, {
-      text: fields.text
-    })
-
-    return {
+    return await this.commentRepository.save({
       ...comment,
-      text: fields.text
-    }
+      ...fields,
+    });
   }
 
-  async deleteOne(commentId: string): Promise<boolean> {
-    const result = await this.commentRepository.delete({ id: commentId })
+  async deleteOne(commentId: string): Promise<void> {
+    const result = await this.commentRepository.delete({ id: commentId });
 
-    return result.affected !== 0
+    if (result.affected === 0) {
+      throw new NotFoundException('Comment does not exist.');
+    }
   }
 }

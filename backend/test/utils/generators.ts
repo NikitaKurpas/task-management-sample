@@ -23,6 +23,8 @@ export const makeMockTask = (overrides: Partial<Task> = {}): Task => {
     status: (['archived', 'completed', 'in progress', 'new'] as TaskStatus[])[getRandomInt(0, 3)],
     createdAt: new Date(Date.now() - getRandomInt(1000, 10000)),
     createdBy: makeMockUser(),
+    comments: [],
+    _comments: Promise.resolve([]),
     updatedAt: new Date(Date.now() + getRandomInt(1000, 10000)),
     ...overrides
   })

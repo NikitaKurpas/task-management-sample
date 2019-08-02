@@ -8,6 +8,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer'
 
 @Entity()
 export class Comment {
@@ -18,11 +19,12 @@ export class Comment {
   text: string;
 
   @ManyToOne(() => Task, task => task.comments, {
-    eager: true,
-    lazy: false,
+    eager: false,
+    lazy: true,
     primary: true,
   })
-  task: Task;
+  @Exclude()
+  _task: Task;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -40,7 +42,7 @@ export class Comment {
   constructor(id: string, text: string, task: Task, createdBy: User) {
     this.id = id
     this.text = text
-    this.task = task
+    this._task = task
     this.createdBy = createdBy
   }
 }

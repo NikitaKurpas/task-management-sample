@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  HttpCode,
-  HttpStatus,
-  NotFoundException,
-  Param,
-  Put,
-  UseGuards
-} from '@nestjs/common';
+import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Put, UseGuards } from '@nestjs/common';
 import { Comment } from './comment.entity'
 import { CommentService } from './comment.service'
 import { IsNotEmpty } from 'class-validator'
@@ -28,13 +18,7 @@ export class CommentController {
 
   @Put(':id')
   async updateOne(@Param('id') id: string, @Body() body: UpdateTaskDto): Promise<Comment> {
-    const comment = await this.commentService.updateOne(id, body)
-
-    if (!comment) {
-      throw new NotFoundException('Comment does not exist.')
-    }
-
-    return comment
+    return await this.commentService.updateOne(id, body)
   }
 
   @Delete(':id')
@@ -42,10 +26,6 @@ export class CommentController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   async deleteOne(@Param('id') id: string): Promise<void> {
-    const isDeleted = await this.commentService.deleteOne(id)
-
-    if (!isDeleted) {
-      throw new NotFoundException('Comment does not exist.')
-    }
+    await this.commentService.deleteOne(id)
   }
 }

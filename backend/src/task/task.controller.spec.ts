@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TaskController } from './task.controller';
 import { TaskService } from './task.service';
-import { makeMockTask } from '../../test/utils/generators';
+import { makeMockTask, makeMockUser } from '../../test/utils/generators';
 import { ReqUser } from '../auth/auth.dto';
 import { TaskStatus } from './task.entity';
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException } from '@nestjs/common';
+import { CommentService } from '../comment/comment.service';
 
 const makeMockTaskService = (): Partial<TaskService> => ({
   findAll: jest.fn(),
@@ -12,8 +13,14 @@ const makeMockTaskService = (): Partial<TaskService> => ({
   findOne: jest.fn(),
   updateOne: jest.fn(),
   archiveOne: jest.fn(),
+  addAssigneeToTask: jest.fn(),
+  removeAssigneeFromTask: jest.fn(),
+});
+const makeMockCommentService = (): Partial<CommentService> => ({
+  createForTask: jest.fn(),
 });
 const mockTasks = [makeMockTask(), makeMockTask()];
+const mockUser = makeMockUser();
 
 describe('Task Controller', () => {
   let controller: TaskController;
@@ -22,10 +29,12 @@ describe('Task Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TaskController],
-      providers: [TaskService],
+      providers: [TaskService, CommentService],
     })
       .overrideProvider(TaskService)
       .useValue(makeMockTaskService())
+      .overrideProvider(CommentService)
+      .useValue(makeMockCommentService())
       .compile();
 
     controller = module.get(TaskController);
@@ -71,16 +80,6 @@ describe('Task Controller', () => {
     expect(await controller.findOne(mockTasks[0].id)).toEqual(mockTasks[0]);
   });
 
-  it("#findOne should throw not found exception if task doesn't exist", async () => {
-    jest
-      .spyOn(taskService, 'findOne')
-      .mockImplementationOnce(async () => undefined);
-
-    await expect(controller.findOne(mockTasks[0].id)).rejects.toBeInstanceOf(
-      NotFoundException,
-    );
-  });
-
   it('#updateOne should update a task by id', async () => {
     const body = {
       description: 'New description',
@@ -97,18 +96,15 @@ describe('Task Controller', () => {
     expect(await controller.updateOne(mockTasks[0].id, body)).toEqual(expected);
   });
 
-  it("#updateOne throw not found exception if task doesn't exist", async () => {
+  it('#updateOne throw ForbiddenException if status update is archived', async () => {
     const body = {
       description: 'New description',
+      status: 'archived',
     };
 
-    jest
-      .spyOn(taskService, 'updateOne')
-      .mockImplementationOnce(async () => undefined);
-
     await expect(
-      controller.updateOne(mockTasks[0].id, body),
-    ).rejects.toBeInstanceOf(NotFoundException);
+      controller.updateOne(mockTasks[0].id, body as any),
+    ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
   it('#archiveOne should change the status to archived of task found by id', async () => {
@@ -123,9 +119,44 @@ describe('Task Controller', () => {
     });
   });
 
-  it("#archiveOne should throw not found exception if task doesn't exist", async () => {
-    await expect(controller.archiveOne(mockTasks[0].id)).rejects.toBeInstanceOf(
-      NotFoundException,
+  it('#addAssigneeToTask should add assignee to task', async () => {
+    const expected = {
+      ...mockTasks[0],
+      assignees: [...mockTasks[0].assignees, mockUser],
+    };
+
+    jest
+      .spyOn(taskService, 'addAssigneeToTask')
+      .mockImplementationOnce(async () => expected);
+
+    expect(
+      await controller.addAssigneeToTask(mockTasks[0].id, mockUser.id),
+    ).toEqual(expected);
+    expect(taskService.addAssigneeToTask).toHaveBeenCalledWith(
+      mockTasks[0].id,
+      mockUser.id,
+    );
+  });
+
+  it('#removeAssigneeFromTask should add assignee to task', async () => {
+    const expected = {
+      ...mockTasks[0],
+      assignees: [mockTasks[0].assignees[1]],
+    };
+
+    jest
+      .spyOn(taskService, 'removeAssigneeFromTask')
+      .mockImplementationOnce(async () => expected);
+
+    expect(
+      await controller.removeAssigneeFromTask(
+        mockTasks[0].id,
+        mockTasks[0].assignees[0].id,
+      ),
+    ).toEqual(expected);
+    expect(taskService.removeAssigneeFromTask).toHaveBeenCalledWith(
+      mockTasks[0].id,
+      mockTasks[0].assignees[0].id,
     );
   });
 });

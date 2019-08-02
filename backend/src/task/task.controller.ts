@@ -1,55 +1,31 @@
 import {
   Body,
   Controller,
+  Delete,
+  ForbiddenException,
   Get,
   Param,
   Post,
   Put,
-  UseGuards,
-  Request, NotFoundException
+  Request,
+  SerializeOptions,
+  UseGuards
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Task, TaskStatus } from './task.entity';
+import { Task } from './task.entity';
 import { RolesGuard } from '../roles.guard';
 import { Roles } from '../roles.decorator';
 import { TaskService } from './task.service';
-import { IsArray, IsNotEmpty, IsOptional, Matches } from 'class-validator';
 import { ReqUser } from '../auth/auth.dto'
-
-class CreateTaskDto {
-  @IsOptional()
-  @IsArray()
-  @IsNotEmpty({ each: true })
-  readonly assigneeIds?: string[];
-
-  @IsNotEmpty()
-  readonly description: string;
-}
-
-class UpdateTaskDto {
-  @IsOptional()
-  @Matches(
-    new RegExp(
-      (['new', 'in progress', 'completed'] as TaskStatus[]).join('|'),
-      'i',
-    ),
-  )
-  readonly status?: Exclude<TaskStatus, 'archived'>;
-
-  @IsOptional()
-  @IsNotEmpty()
-  readonly description?: string;
-
-  @IsOptional()
-  @IsArray()
-  @IsNotEmpty({ each: true })
-  readonly assigneeIds?: string[];
-}
+import { Comment } from '../comment/comment.entity'
+import { CommentService } from '../comment/comment.service'
+import { CreateCommentDto, CreateTaskDto, UpdateTaskDto } from './task.controller.dto'
 
 @Controller('tasks')
 @UseGuards(AuthGuard('jwt'))
 export class TaskController {
-  constructor(private readonly taskService: TaskService) {}
+  constructor(private readonly taskService: TaskService,
+              private readonly commentService: CommentService) {}
 
   @Get()
   findAll(): Promise<Task[]> {
@@ -62,14 +38,11 @@ export class TaskController {
   }
 
   @Get(':id')
+  @SerializeOptions({
+    excludePrefixes: ['_']
+  })
   async findOne(@Param('id') taskId: string): Promise<Task> {
-    const task = await this.taskService.findOne(taskId);
-
-    if (!task) {
-      throw new NotFoundException('Task does not exist.')
-    }
-
-    return task
+    return await this.taskService.findOne(taskId)
   }
 
   @Put(':id')
@@ -77,25 +50,39 @@ export class TaskController {
     @Param('id') taskId: string,
     @Body() body: UpdateTaskDto,
   ): Promise<Task> {
-    let task = await this.taskService.updateOne(taskId, body)
-
-    if (!task) {
-      throw new NotFoundException('Task does not exist.')
+    // @ts-ignore - don't trust the client
+    if (body.status === 'archived') {
+      throw new ForbiddenException('Cannot update task status to archived.')
     }
 
-    return task;
+    return await this.taskService.updateOne(taskId, body);
   }
 
   @Post(':id/archive')
   @Roles('admin')
   @UseGuards(RolesGuard)
   async archiveOne(@Param('id') taskId: string): Promise<Task> {
-    let task = await this.taskService.archiveOne(taskId)
+    return await this.taskService.archiveOne(taskId);
+  }
 
-    if (!task) {
-      throw new NotFoundException('Task does not exist.')
-    }
+  @Get(':id/comments')
+  async findAllCommentsTask(@Param('taskId') id: string): Promise<Comment[]> {
+    const task = await this.taskService.findOne(id)
+    return task.comments
+  }
 
-    return task;
+  @Post(':id/comments')
+  async createCommentForTask(@Request() req, @Param('taskId') taskId: string, @Body() body: CreateCommentDto): Promise<Comment> {
+    return this.commentService.createForTask(taskId, body, req.user as ReqUser)
+  }
+
+  @Put(':id/assignees/:assigneeId')
+  async addAssigneeToTask(@Param('id') taskId, @Param('assigneeId') assigneeId) {
+    return this.taskService.addAssigneeToTask(taskId, assigneeId);
+  }
+
+  @Delete(':id/assignees/:assigneeId')
+  async removeAssigneeFromTask(@Param('id') taskId, @Param('assigneeId') assigneeId) {
+    return this.taskService.removeAssigneeFromTask(taskId, assigneeId);
   }
 }

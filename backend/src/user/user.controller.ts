@@ -1,4 +1,13 @@
-import { Body, Controller, Get, InternalServerErrorException, Param, Put, Request, UseGuards, } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { User } from './user.entity';
 import jwt from 'jsonwebtoken';
 import { UserService } from './user.service';
@@ -34,13 +43,18 @@ export class UserController {
     @Request() req,
     @Body() body: UpdateUserRequestDto,
   ): Promise<User> {
-    const user = await this.userService.updateOne((req.user as ReqUser).id, body);
+    const user = await this.userService.updateOne(
+      (req.user as ReqUser).id,
+      body,
+    );
 
     if (!user) {
-      throw new InternalServerErrorException('Unexpected state. User should exist.')
+      throw new InternalServerErrorException(
+        'Unexpected state. User should exist.',
+      );
     }
 
-    return user
+    return user;
   }
 
   @Get(':id')
@@ -55,6 +69,6 @@ export class UserController {
     @Param('id') userId: string,
     @Body() body: UpdateUserRequestDto,
   ): Promise<User> {
-    return await this.userService.updateOne(userId, body)
+    return await this.userService.updateOne(userId, body);
   }
 }

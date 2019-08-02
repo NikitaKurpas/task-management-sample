@@ -55,7 +55,9 @@ describe('AuthService', () => {
     jest
       .spyOn(userService, 'findOneByEmail')
       .mockImplementationOnce(async () => undefined);
-    expect(await service.validateUser(mockUser.email, 'supersecret')).toBeNull();
+    expect(
+      await service.validateUser(mockUser.email, 'supersecret'),
+    ).toBeNull();
   });
 
   it("#validateUser should return null if passwords don't match", async () => {
@@ -64,25 +66,29 @@ describe('AuthService', () => {
       .spyOn(userService, 'findOneByEmail')
       .mockImplementationOnce(async () => mockUser);
 
-    expect(await service.validateUser(mockUser.email, 'supersecret')).toBeNull();
+    expect(
+      await service.validateUser(mockUser.email, 'supersecret'),
+    ).toBeNull();
   });
 
   it('#login should generate a token for the user', async () => {
-    jest.spyOn(jwtService, 'signAsync').mockImplementationOnce(async () => 'signed.token')
+    jest
+      .spyOn(jwtService, 'signAsync')
+      .mockImplementationOnce(async () => 'signed.token');
     const mockReqUser = {
       id: mockUser.id,
       email: mockUser.email,
       admin: mockUser.role === 'administrator',
-      name: mockUser.name
-    }
+      name: mockUser.name,
+    };
     expect(await service.login(mockReqUser)).toEqual({
-      token: 'signed.token'
-    })
+      token: 'signed.token',
+    });
     expect(jwtService.signAsync).toHaveBeenCalledWith({
       sub: mockUser.id,
       name: mockUser.name,
       email: mockUser.email,
-      admin: false
-    })
-  })
+      admin: false,
+    });
+  });
 });

@@ -1,5 +1,5 @@
-import { IsArray, IsNotEmpty, IsOptional, Matches } from 'class-validator'
-import { TaskStatus } from './task.entity'
+import { IsArray, IsNotEmpty, IsOptional, Matches } from 'class-validator';
+import { TaskStatus } from './task.entity';
 
 export class CreateTaskDto {
   @IsOptional()
@@ -13,7 +13,7 @@ export class CreateTaskDto {
 
 export class CreateCommentDto {
   @IsNotEmpty()
-  text: string
+  text: string;
 }
 
 export class UpdateTaskDto {

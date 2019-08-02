@@ -11,7 +11,7 @@ async function bootstrap() {
       disableErrorMessages: process.env.NODE_ENV !== 'development',
     }),
   );
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()))
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(new Reflector()));
   await app.listen(config.get('port'));
 }
 bootstrap();

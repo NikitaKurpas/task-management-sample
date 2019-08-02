@@ -8,7 +8,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer'
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Comment {
@@ -40,9 +40,9 @@ export class Comment {
   updatedAt: Date;
 
   constructor(id: string, text: string, task: Task, createdBy: User) {
-    this.id = id
-    this.text = text
-    this._task = task
-    this.createdBy = createdBy
+    this.id = id;
+    this.text = text;
+    this._task = task;
+    this.createdBy = createdBy;
   }
 }

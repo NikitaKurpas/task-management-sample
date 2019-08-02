@@ -16,7 +16,7 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<Omit<User, 'passwordHash'> | null> {
-    let user: User
+    let user: User;
     try {
       user = await this.usersService.findOneByEmail(email);
     } catch (err) {
@@ -24,7 +24,7 @@ export class AuthService {
         return null;
       }
 
-      throw err
+      throw err;
     }
 
     const valid = await bcrypt.compare(password, user.passwordHash);

@@ -103,11 +103,9 @@ describe('User Controller', () => {
         ...fields,
       }));
 
-    expect(
-      await controller.updateUserById(mockUsers[0].id, body),
-    ).toEqual({
+    expect(await controller.updateUserById(mockUsers[0].id, body)).toEqual({
       ...mockUsers[0],
-      ...body
+      ...body,
     });
     expect(userService.updateOne).toHaveBeenCalledWith(mockUsers[0].id, body);
   });

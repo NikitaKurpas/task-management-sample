@@ -30,7 +30,7 @@ export class Task {
 
   @ManyToMany(() => User, {
     eager: true,
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   @JoinTable()
   assignees: User[];
@@ -49,7 +49,7 @@ export class Task {
   createdAt: Date;
 
   @ManyToOne(() => User, {
-    eager: true
+    eager: true,
   })
   createdBy: User;
 

@@ -5,7 +5,7 @@ import {
   Index,
   PrimaryColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer'
+import { Exclude } from 'class-transformer';
 
 export type UserRole = 'user' | 'administrator';
 

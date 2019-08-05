@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Task, TaskStatus } from './task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -22,6 +26,8 @@ class UpdateTaskDto {
 
 @Injectable()
 export class TaskService {
+  private readonly logger = new Logger(TaskService.name);
+
   constructor(
     @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
     private readonly userService: UserService,
@@ -45,7 +51,7 @@ export class TaskService {
   }
 
   async create(fields: CreateTaskDto, by: ReqUser): Promise<Task> {
-    // TODO: validate author and assignee ids against the database
+    // TODO: validate author and assignee ids against the database and preload them
 
     const task = new Task(
       uniqid(),
@@ -79,19 +85,30 @@ export class TaskService {
       ...fields,
     });
 
-    result.assignees.forEach(assignee => {
-      this.mailService.sendMail({
-        to: assignee.email,
-        subject: 'Task updated',
-        template: 'task-changed',
-        context: {
-          name: assignee.name || assignee.email,
-          updater: by.name || by.email,
-          task: task.description,
-          url: urlJoin(config.get('frontendUrl'), `tasks/${result.id}`),
-        },
-      });
-    });
+    // Send mails asynchronously and don't wait for them to finish
+    (async () => {
+      try {
+        await Promise.all(
+          result.assignees
+            .filter(assignee => assignee.id !== by.id) // Do not send emails for self
+            .map(assignee =>
+              this.mailService.sendMail({
+                to: assignee.email,
+                subject: 'Task updated',
+                template: 'task-changed',
+                context: {
+                  name: assignee.name || assignee.email,
+                  updater: by.name || by.email,
+                  task: task.description,
+                  url: urlJoin(config.get('frontendUrl'), `tasks/${result.id}`),
+                },
+              }),
+            ),
+        );
+      } catch (err) {
+        this.logger.error(err.message, err.stack);
+      }
+    })();
 
     return result;
   }

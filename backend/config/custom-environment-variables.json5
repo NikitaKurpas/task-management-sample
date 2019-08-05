@@ -1,4 +1,5 @@
 {
+  frontendUrl: 'FRONTEND_URL',
   port: 'PORT',
   jwtSecret: 'JWT_SECRET',
   db: {

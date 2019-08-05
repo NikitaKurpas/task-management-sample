@@ -1,7 +1,9 @@
 {
   jwtSecret: "dev",
   db: {
-    type: 'sqlite',
-    database: ':memory:'
+    host: 'localhost',
+    type: 'postgres',
+    password: 'dev',
+    database: 'postgres'
   }
 }

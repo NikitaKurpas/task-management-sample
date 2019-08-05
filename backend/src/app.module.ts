@@ -4,8 +4,9 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
 import { CommentModule } from './comment/comment.module';
-import config from 'config';
 import { RolesGuard } from './roles.guard';
+import { MailModule } from './mail/mail.module';
+import config from 'config';
 
 @Module({
   imports: [
@@ -21,6 +22,13 @@ import { RolesGuard } from './roles.guard';
     AuthModule,
     TaskModule,
     CommentModule,
+    MailModule.forRoot({
+      ...config.get('mail'),
+      template: {
+        dir: __dirname + '/templates',
+        strict: true,
+      },
+    }),
   ],
   controllers: [],
   providers: [RolesGuard],

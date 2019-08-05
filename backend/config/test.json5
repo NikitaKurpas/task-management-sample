@@ -1,4 +1,5 @@
 {
+  frontendUrl: 'https://test.exmaple.com',
   jwtSecret: "test",
   db: {
     type: 'sqlite',

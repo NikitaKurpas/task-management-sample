@@ -53,6 +53,7 @@ export class TaskController {
 
   @Put(':id')
   async updateOne(
+    @Request() req,
     @Param('id') taskId: string,
     @Body() body: UpdateTaskDto,
   ): Promise<Task> {
@@ -61,7 +62,7 @@ export class TaskController {
       throw new ForbiddenException('Cannot update task status to archived.');
     }
 
-    return await this.taskService.updateOne(taskId, body);
+    return await this.taskService.updateOne(taskId, body, req.user as ReqUser);
   }
 
   @Post(':id/archive')

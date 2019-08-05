@@ -6,6 +6,9 @@ import { User } from '../user/user.entity';
 import uniqid from 'uniqid';
 import { ReqUser } from '../auth/auth.dto';
 import { UserService } from '../user/user.service';
+import { MailService } from '../mail/mail.service';
+import config from 'config';
+import urlJoin from 'url-join';
 
 class CreateTaskDto {
   readonly description: string;
@@ -22,6 +25,7 @@ export class TaskService {
   constructor(
     @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
     private readonly userService: UserService,
+    private readonly mailService: MailService,
   ) {}
 
   async findAll(): Promise<Task[]> {
@@ -57,6 +61,7 @@ export class TaskService {
   async updateOne(
     id: string,
     fields: UpdateTaskDto = {},
+    by: ReqUser,
   ): Promise<Task | undefined> {
     const task = await this.taskRepository.findOne(id);
 
@@ -69,10 +74,26 @@ export class TaskService {
       return task;
     }
 
-    return this.taskRepository.save({
+    const result = await this.taskRepository.save({
       ...task,
       ...fields,
     });
+
+    result.assignees.forEach(assignee => {
+      this.mailService.sendMail({
+        to: assignee.email,
+        subject: 'Task updated',
+        template: 'task-changed',
+        context: {
+          name: assignee.name || assignee.email,
+          updater: by.name || by.email,
+          task: task.description,
+          url: urlJoin(config.get('frontendUrl'), `tasks/${result.id}`),
+        },
+      });
+    });
+
+    return result;
   }
 
   async archiveOne(id: string): Promise<Task> {

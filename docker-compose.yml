@@ -13,6 +13,7 @@ services:
       DB_HOST: database
       DB_PASS: credere_interdum
       DB_DATABASE: task_manager_db
+      FRONTEND_URL: 'http://localhost:3000'
     depends_on:
       - database
   proxy:

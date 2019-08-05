@@ -4,6 +4,7 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcryptjs';
 import { makeMockUser } from '../../test/utils/generators';
+import { NotFoundException } from '@nestjs/common'
 
 const makeMockUserService = (): Partial<UserService> => ({
   findOneByEmail: jest.fn(),
@@ -54,7 +55,8 @@ describe('AuthService', () => {
   it('#validateUser should return null if user cannot be found', async () => {
     jest
       .spyOn(userService, 'findOneByEmail')
-      .mockImplementationOnce(async () => undefined);
+      .mockRejectedValueOnce(new NotFoundException());
+
     expect(
       await service.validateUser(mockUser.email, 'supersecret'),
     ).toBeNull();

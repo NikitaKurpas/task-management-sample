@@ -81,6 +81,12 @@ describe('Task Controller', () => {
   });
 
   it('#updateOne should update a task by id', async () => {
+    const mockReqUser: ReqUser = {
+      id: '123',
+      admin: false,
+      email: 'john.doe@example.com',
+      name: 'John Doe',
+    };
     const body = {
       description: 'New description',
     };
@@ -93,17 +99,25 @@ describe('Task Controller', () => {
       .spyOn(taskService, 'updateOne')
       .mockImplementationOnce(async () => expected);
 
-    expect(await controller.updateOne(mockTasks[0].id, body)).toEqual(expected);
+    expect(
+      await controller.updateOne(mockReqUser, mockTasks[0].id, body),
+    ).toEqual(expected);
   });
 
   it('#updateOne throw ForbiddenException if status update is archived', async () => {
+    const mockReqUser: ReqUser = {
+      id: '123',
+      admin: false,
+      email: 'john.doe@example.com',
+      name: 'John Doe',
+    };
     const body = {
       description: 'New description',
       status: 'archived',
     };
 
     await expect(
-      controller.updateOne(mockTasks[0].id, body as any),
+      controller.updateOne(mockReqUser, mockTasks[0].id, body as any),
     ).rejects.toBeInstanceOf(ForbiddenException);
   });
 

@@ -7,6 +7,7 @@ import { makeMockTask } from '../../test/utils/generators';
 import { ReqUser } from '../auth/auth.dto';
 import { NotFoundException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
+import { MailService } from '../mail/mail.service';
 
 const makeMockTaskRepository = (): Partial<Repository<Task>> => ({
   find: jest.fn(),
@@ -16,11 +17,15 @@ const makeMockTaskRepository = (): Partial<Repository<Task>> => ({
 const makeMockUserService = (): Partial<Repository<Task>> => ({
   findOne: jest.fn(),
 });
+const makeMockMailService = (): Partial<MailService> => ({
+  sendMail: jest.fn(),
+});
 const mockTasks = [makeMockTask(), makeMockTask()];
 
 describe('TaskService', () => {
   let service: TaskService;
   let taskRepository: Repository<Task>;
+  let mailService: MailService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -31,14 +36,18 @@ describe('TaskService', () => {
           useValue: makeMockTaskRepository(),
         },
         UserService,
+        MailService,
       ],
     })
       .overrideProvider(UserService)
       .useValue(makeMockUserService())
+      .overrideProvider(MailService)
+      .useValue(makeMockMailService())
       .compile();
 
     service = module.get(TaskService);
     taskRepository = module.get(getRepositoryToken(Task));
+    mailService = module.get(MailService);
   });
 
   it('#findAll should return all tasks', async () => {
@@ -110,6 +119,12 @@ describe('TaskService', () => {
   });
 
   it('#updateOne should update the task with correct assignees', async () => {
+    const reqUser: ReqUser = {
+      id: '123',
+      email: 'john.doe@example.com',
+      name: 'John Doe',
+      admin: false,
+    };
     const fields = {
       status: 'in progress' as Exclude<TaskStatus, 'archived'>,
       description: mockTasks[1].description,
@@ -127,19 +142,46 @@ describe('TaskService', () => {
       .spyOn(taskRepository, 'save')
       .mockImplementationOnce(async () => expected);
 
-    expect(await service.updateOne(mockTasks[0].id, fields)).toEqual(expected);
+    expect(await service.updateOne(mockTasks[0].id, fields, reqUser)).toEqual(
+      expected,
+    );
     expect(taskRepository.findOne).toHaveBeenCalledWith(mockTasks[0].id);
     expect(taskRepository.save).toHaveBeenCalledWith(expected);
+
+    const lastAssignee =
+      mockTasks[0].assignees[mockTasks[0].assignees.length - 1];
+
+    expect(mailService.sendMail).toHaveBeenCalledTimes(
+      mockTasks[0].assignees.length,
+    );
+    expect(mailService.sendMail).toHaveBeenLastCalledWith({
+      to: lastAssignee.email,
+      subject: 'Task updated',
+      template: 'task-changed',
+      context: {
+        name: lastAssignee.name,
+        updater: reqUser.name,
+        url: `https://test.exmaple.com/tasks/${mockTasks[0].id}`,
+        task: mockTasks[0].description,
+      },
+    });
   });
 
   it('#updateOne should throw NotFound exception if the task is not found', async () => {
+    const reqUser: ReqUser = {
+      id: '123',
+      email: 'john.doe@example.com',
+      name: 'John Doe',
+      admin: false,
+    };
+
     jest
       .spyOn(taskRepository, 'findOne')
       .mockImplementationOnce(async () => undefined);
 
-    await expect(service.updateOne(mockTasks[0].id, {})).rejects.toBeInstanceOf(
-      NotFoundException,
-    );
+    await expect(
+      service.updateOne(mockTasks[0].id, {}, reqUser),
+    ).rejects.toBeInstanceOf(NotFoundException);
     expect(taskRepository.save).not.toHaveBeenCalled();
   });
 

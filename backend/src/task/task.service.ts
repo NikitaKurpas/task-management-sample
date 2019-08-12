@@ -1,9 +1,5 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
-import { Task, TaskStatus } from './task.entity';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Task } from './task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
@@ -13,6 +9,7 @@ import { UserService } from '../user/user.service';
 import { MailService } from '../mail/mail.service';
 import config from 'config';
 import urlJoin from 'url-join';
+import { TaskStatus } from '../../../common/types/common';
 
 class CreateTaskDto {
   readonly description: string;

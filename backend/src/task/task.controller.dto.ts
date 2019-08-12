@@ -1,5 +1,5 @@
 import { IsArray, IsNotEmpty, IsOptional, Matches } from 'class-validator';
-import { TaskStatus } from './task.entity';
+import { TaskStatus } from '../../../common/types/common'
 
 export class CreateTaskDto {
   @IsOptional()

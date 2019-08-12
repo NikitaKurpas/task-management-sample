@@ -6,11 +6,10 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-
-export type UserRole = 'user' | 'administrator';
+import { IUser, UserRole } from '../../../common/types/common'
 
 @Entity()
-export class User {
+export class User implements IUser {
   @PrimaryColumn()
   id: string;
 

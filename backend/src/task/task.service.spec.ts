@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TaskService } from './task.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Task, TaskStatus } from './task.entity';
+import { Task } from './task.entity';
 import { Repository } from 'typeorm';
 import { makeMockTask } from '../../test/utils/generators';
 import { ReqUser } from '../auth/auth.dto';
 import { NotFoundException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { MailService } from '../mail/mail.service';
+import { TaskStatus } from '../../../common/types/common'
 
 const makeMockTaskRepository = (): Partial<Repository<Task>> => ({
   find: jest.fn(),

@@ -8,14 +8,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-
-export class TokenResponseDto {
-  readonly token: string;
-}
+import { ITokenResponse, IUser } from '../../../common/types/common';
 
 export class RegisterRequestDto {
   @IsEmail()
@@ -39,12 +35,12 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Request() req): Promise<TokenResponseDto> {
+  async login(@Request() req): Promise<ITokenResponse> {
     return this.authService.login(req.user);
   }
 
   @Post('register')
-  async register(@Body() body: RegisterRequestDto): Promise<User> {
+  async register(@Body() body: RegisterRequestDto): Promise<IUser> {
     return this.userService.create(body);
   }
 }

@@ -1,5 +1,6 @@
 import { User } from '../../src/user/user.entity'
-import { Task, TaskStatus } from '../../src/task/task.entity'
+import { Task } from '../../src/task/task.entity'
+import { TaskStatus } from '../../../common/types/common'
 
 export const makeMockUser = (overrides: Partial<User> = {}): User => {
   let randomId = overrides.id || getRandomInt(1, 100)

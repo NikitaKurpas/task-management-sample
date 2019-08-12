@@ -12,11 +12,10 @@ import {
 } from 'typeorm';
 import { Comment } from '../comment/comment.entity';
 import { Exclude } from 'class-transformer';
-
-export type TaskStatus = 'new' | 'in progress' | 'completed' | 'archived';
+import { ITask, TaskStatus } from '../../../common/types/common'
 
 @Entity()
-export class Task {
+export class Task implements ITask {
   @PrimaryColumn()
   id: string;
 

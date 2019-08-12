@@ -3,9 +3,9 @@ import { TaskController } from './task.controller';
 import { TaskService } from './task.service';
 import { makeMockTask, makeMockUser } from '../../test/utils/generators';
 import { ReqUser } from '../auth/auth.dto';
-import { TaskStatus } from './task.entity';
 import { ForbiddenException } from '@nestjs/common';
 import { CommentService } from '../comment/comment.service';
+import { TaskStatus } from '../../../common/types/common'
 
 const makeMockTaskService = (): Partial<TaskService> => ({
   findAll: jest.fn(),

@@ -8,7 +8,6 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { User } from './user.entity';
 import jwt from 'jsonwebtoken';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -16,6 +15,7 @@ import { ReqUser } from '../auth/auth.dto';
 import { Roles } from '../roles.decorator';
 import { RolesGuard } from '../roles.guard';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { IUser } from '../../../common/types/common';
 
 class UpdateUserRequestDto {
   @IsString()
@@ -29,12 +29,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getUsers(): Promise<User[]> {
+  async getUsers(): Promise<IUser[]> {
     return this.userService.findAll();
   }
 
   @Get('me')
-  async getProfile(@Request() req): Promise<User> {
+  async getProfile(@Request() req): Promise<IUser> {
     return this.userService.findOne((req.user as ReqUser).id);
   }
 
@@ -42,7 +42,7 @@ export class UserController {
   async updateProfile(
     @Request() req,
     @Body() body: UpdateUserRequestDto,
-  ): Promise<User> {
+  ): Promise<IUser> {
     const user = await this.userService.updateOne(
       (req.user as ReqUser).id,
       body,
@@ -58,7 +58,7 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUserById(@Param('id') userId: string) {
+  async getUserById(@Param('id') userId: string): Promise<IUser> {
     return this.userService.findOne(userId);
   }
 
@@ -68,7 +68,7 @@ export class UserController {
   async updateUserById(
     @Param('id') userId: string,
     @Body() body: UpdateUserRequestDto,
-  ): Promise<User> {
+  ): Promise<IUser> {
     return await this.userService.updateOne(userId, body);
   }
 }

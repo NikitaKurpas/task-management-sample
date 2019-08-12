@@ -9,9 +9,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { IComment } from '../../../common/types/common'
 
 @Entity()
-export class Comment {
+export class Comment implements IComment {
   @PrimaryColumn()
   id: string;
 

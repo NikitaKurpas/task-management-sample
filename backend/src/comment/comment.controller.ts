@@ -8,12 +8,12 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { Comment } from './comment.entity';
 import { CommentService } from './comment.service';
 import { IsNotEmpty } from 'class-validator';
 import { Roles } from '../roles.decorator';
 import { RolesGuard } from '../roles.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { IComment } from '../../../common/types/common'
 
 class UpdateTaskDto {
   @IsNotEmpty()
@@ -29,7 +29,7 @@ export class CommentController {
   async updateOne(
     @Param('id') id: string,
     @Body() body: UpdateTaskDto,
-  ): Promise<Comment> {
+  ): Promise<IComment> {
     return await this.commentService.updateOne(id, body);
   }
 

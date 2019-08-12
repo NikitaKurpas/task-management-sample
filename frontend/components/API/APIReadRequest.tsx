@@ -1,4 +1,4 @@
-import React, { Reducer, useEffect, useMemo, useReducer } from "react";
+import React, { Reducer, useEffect, useReducer } from "react";
 import { HTTPMethod, useApiClient } from "./APIClient";
 import { handleInvalidResponse } from "./APIClient.utils";
 
@@ -95,11 +95,8 @@ export const useApiRead = <T extends {}>(
     [path, method, headers]
   );
 
-  return useMemo(
-    () => ({
-      ...state,
-      refetch: executeRequest
-    }),
-    [state.loading, state.error, state.data]
-  );
+  return {
+    ...state,
+    refetch: executeRequest
+  }
 };

@@ -32,3 +32,8 @@ export interface IComment {
 export interface ITokenResponse {
   token: string;
 }
+
+export interface IErrorResponse {
+  message: string;
+  statusCode: number;
+}

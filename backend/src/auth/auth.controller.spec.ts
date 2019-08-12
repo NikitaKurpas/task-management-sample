@@ -62,7 +62,7 @@ describe('Auth Controller', () => {
       .spyOn(userService, 'create')
       .mockImplementationOnce(async () => mockUser);
 
-    expect(await controller.register(body)).toEqual(mockUser);
+    expect(await controller.register(body)).toBeUndefined();
     expect(userService.create).toHaveBeenCalledWith(body);
   });
 });

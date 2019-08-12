@@ -3,6 +3,7 @@ import { useApiWrite } from "../API/APIWriteRequest";
 import { ITokenResponse } from "../../../common/types/common";
 import Router from "next/router";
 import LoginView from "./LoginView";
+import { useAuth } from '../Auth/Auth'
 
 const Login: React.FunctionComponent = () => {
   const [login, { data, loading, error: networkError }] = useApiWrite<
@@ -13,8 +14,8 @@ const Login: React.FunctionComponent = () => {
     (email: string, password: string) => login({ email, password }),
     []
   );
+  const { token, initAuth } = useAuth()
 
-  const token = localStorage.getItem("_t");
   // Redirect to index when token already exists
   if (token) {
     // noinspection JSIgnoredPromiseFromCall
@@ -26,7 +27,7 @@ const Login: React.FunctionComponent = () => {
 
   if (!networkError && !loading && data) {
     if (data.token) {
-      localStorage.setItem("_t", data.token);
+      initAuth(data.token)
       return null;
     }
     // Exceptional state, this shouldn't happen

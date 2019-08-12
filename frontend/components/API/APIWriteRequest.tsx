@@ -5,6 +5,8 @@ import { handleInvalidResponse } from "./APIClient.utils";
 type APIWriteOptions = {
   method?: HTTPMethod;
   headers?: HeadersInit;
+  // Option specifies whether to short-circuit when token is not available on protected resources
+  fetchProtectedOnly?: boolean;
 };
 
 type APIWriteResult<T, U extends {}> = [
@@ -41,14 +43,24 @@ const reducer = <T extends {}>(
   }
 };
 
-export const useApiWrite = <T extends {}, U extends {}>(
+export const useApiWrite = <T extends any, U extends {}>(
   path: string,
-  { method = "POST", headers }: APIWriteOptions = {}
+  { method = "POST", headers: initHeaders, fetchProtectedOnly = false }: APIWriteOptions = {}
 ): APIWriteResult<T, U> => {
   const [state, dispatch] = useReducer<Reducer<State<T>, Action<T>>>(reducer, {
     loading: false
   });
   const client = useApiClient();
+
+  const token = localStorage.getItem("_t");
+
+  // Short-circuit when the token is not available
+  if (fetchProtectedOnly && !token) {
+    dispatch({ type: 'error', payload: new Error('Unable to perform operation. Reason: unauthenticated.') })
+  }
+
+  const headers = new Headers(initHeaders)
+  headers.append('Content-Type', 'application/json')
 
   const executor = useCallback(
     async (body: U) => {

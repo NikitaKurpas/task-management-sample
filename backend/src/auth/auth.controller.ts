@@ -11,7 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-import { ITokenResponse, IUser } from '../../../common/types/common';
+import { ITokenResponse } from '../../../common/types/common';
 
 export class RegisterRequestDto {
   @IsEmail()
@@ -40,7 +40,7 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() body: RegisterRequestDto): Promise<IUser> {
-    return this.userService.create(body);
+  async register(@Body() body: RegisterRequestDto): Promise<void> {
+    await this.userService.create(body);
   }
 }

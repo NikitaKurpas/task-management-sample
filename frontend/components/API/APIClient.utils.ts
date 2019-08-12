@@ -13,7 +13,7 @@ export const handleInvalidResponse = async (
     dispatch({
       type: "error",
       payload: new Error(
-        "User forbidden to execute action. Reason: unauthenticated."
+        "Unable to perform operation. Reason: unauthenticated."
       )
     });
   }
@@ -23,7 +23,7 @@ export const handleInvalidResponse = async (
     dispatch({
       type: "error",
       payload: new Error(
-        "User forbidden to execute action. Reason: missing permissions."
+        "Unable to perform operation. Reason: missing permissions."
       )
     });
   }

@@ -89,7 +89,7 @@ npm run test
 - [x] Write backend API mock
 - [x] Write tests for the API
 - [x] Link API to a DB
-- [ ] Write frontend in React
+- [ ] Write frontend in React [WIP]
 - [ ] Write tests for frontend
 - [ ] Write OpenAPI docs
 - [x] Write remaining tests for the API

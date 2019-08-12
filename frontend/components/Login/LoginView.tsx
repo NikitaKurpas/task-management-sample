@@ -18,7 +18,7 @@ const reducer = (state: State, action: Action): State => {
   };
 };
 
-export const LoginView: React.FunctionComponent<{
+const LoginView: React.FunctionComponent<{
   onLogin: (email: string, password: string) => any;
   loading: boolean;
   error?: Error;
@@ -52,14 +52,20 @@ export const LoginView: React.FunctionComponent<{
 
   return (
     <form onSubmit={handleSubmit}>
+      <label htmlFor="email">Email:</label>
       <input
         type="email"
+        id="email"
+        placeholder="Email"
         required
         value={email}
         onChange={e => dispatch({ type: "email", payload: e.target.value })}
       />
+      <label htmlFor="password">Password:</label>
       <input
         type="password"
+        id="password"
+        placeholder="Password"
         required
         minLength={3}
         value={password}
@@ -70,3 +76,5 @@ export const LoginView: React.FunctionComponent<{
     </form>
   );
 };
+
+export default LoginView

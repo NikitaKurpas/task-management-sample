@@ -8,8 +8,10 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm ci
 
+COPY components ./components
 COPY pages ./pages
-COPY next-env.d.ts tsconfig.json ./
+COPY utils ./utils
+COPY next.config.js next-env.d.ts tsconfig.json ./
 
 ENV NODE_ENV production
 RUN npm run build

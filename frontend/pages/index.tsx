@@ -1,5 +1,4 @@
-import React from 'react'
+import React from "react";
+import TaskList from "../components/TaskList/TaskList";
 
-const Home = () => <h1>Welcome</h1>
-
-export default Home
+export default TaskList

@@ -25,6 +25,8 @@ Docker Compose will start backend, frontend, database, and reverse proxy.
 
 The app will be available on `localhost:8080`. Frontend is mounted on `/`, and API is mounted on `/api/`.
 
+The UI component sink page is available at `/sink`
+
 ### Node.js
 
 Prerequisites: Node.js >= 10, npm >= 6
@@ -38,6 +40,8 @@ npm run dev # start the dev server
 ```
 
 App will be available on `localhost:3000`
+
+The UI component sink page is available at `/sink`
 
 ### Backend
 

@@ -2,7 +2,7 @@ import React, { FormEvent, useCallback, useReducer } from "react";
 
 type Action = {
   type: keyof State;
-  payload: string;
+  payload: string
 };
 
 type State = {
@@ -41,14 +41,12 @@ const LoginView: React.FunctionComponent<{
         return dispatch({ type: "error", payload: "Password is too short" });
       }
 
+      // Reset the error message
+      dispatch({ type: 'error', payload: '' })
       onLogin(email, password);
     },
-    [onLogin]
+    [onLogin, email, password]
   );
-
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -72,9 +70,11 @@ const LoginView: React.FunctionComponent<{
         onChange={e => dispatch({ type: "password", payload: e.target.value })}
       />
       <input type="submit" />
-      {error && <p>{error}</p>}
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      {networkError && <p>Error: {networkError.message}</p>}
     </form>
   );
 };
 
-export default LoginView
+export default LoginView;

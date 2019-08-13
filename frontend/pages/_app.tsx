@@ -22,7 +22,7 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const apiClient = new APIClient({
-  baseUrl: process.env.API_ROOT || "//api"
+  baseUrl: process.env.API_ROOT || "/api"
 });
 
 class MyApp extends App {

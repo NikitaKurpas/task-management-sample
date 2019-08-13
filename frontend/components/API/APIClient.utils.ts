@@ -37,7 +37,7 @@ export const handleInvalidResponse = async (
   } catch (err) {
     dispatch({
       type: "error",
-      payload: new Error("Unable to process error. Invalid response.")
+      payload: new Error(`${res.status} ${res.statusText}`)
     });
   }
 };

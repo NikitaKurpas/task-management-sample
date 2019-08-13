@@ -1,18 +1,27 @@
 import React from "react";
 import { useApiRead } from '../API/APIReadRequest'
 import { ITask } from '../../../common/types/common'
+import { useAuth } from '../Auth/Auth'
+import Router from 'next/router'
 
 export const TaskListView: React.FunctionComponent<{
   tasks?: ITask[]
   loading: boolean
   error?: Error
 }> = ({ tasks, loading, error}) => {
-  if (loading) {
+  const { loading: authLoading, user } = useAuth()
+
+  if (!authLoading && !user) {
+    Router.push('/login')
+    return null
+  }
+
+  if (loading || authLoading) {
     return <h1>Loading...</h1>
   }
 
   if (error) {
-    return <h1>Error: ${error.message}</h1>
+    return <h1>Error: {error.message}</h1>
   }
 
   if (tasks == null) {

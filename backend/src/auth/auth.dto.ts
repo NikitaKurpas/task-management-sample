@@ -1,3 +1,5 @@
+import { IJwtTokenPayload } from '../../../common/types/common'
+
 export class ReqUser {
   readonly id: string;
   readonly email: string;
@@ -5,7 +7,7 @@ export class ReqUser {
   readonly admin: boolean;
 }
 
-export class JwtPayload {
+export class JwtPayload implements IJwtTokenPayload {
   readonly sub: string;
   readonly name?: string;
   readonly email: string;

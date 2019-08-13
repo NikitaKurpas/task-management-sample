@@ -37,3 +37,10 @@ export interface IErrorResponse {
   message: string;
   statusCode: number;
 }
+
+export interface IJwtTokenPayload {
+  sub: string;
+  name?: string;
+  email: string;
+  admin: boolean;
+}

@@ -4,7 +4,7 @@ import { handleInvalidResponse } from "./APIClient.utils";
 
 type APIReadOptions = {
   method?: HTTPMethod;
-  headers?: HeadersInit;
+  headers?: Record<string, string>;
   // Option specifies whether to short-circuit when token is not available on protected resources
   fetchProtectedOnly?: boolean;
 };
@@ -45,7 +45,7 @@ export const useApiRead = <T extends {}>(
   path: string,
   {
     method = "GET",
-    headers: initHeaders,
+    headers = {},
     fetchProtectedOnly = false
   }: APIReadOptions = {}
 ): APIReadResult<T> => {
@@ -54,21 +54,20 @@ export const useApiRead = <T extends {}>(
   });
   const client = useApiClient();
 
-  const token = localStorage.getItem("_t");
-
-  // Short-circuit when the token is not available
-  if (fetchProtectedOnly && !token) {
-    dispatch({ type: 'error', payload: new Error('Unable to perform operation. Reason: unauthenticated.') })
-  }
-
-  const headers = new Headers(initHeaders);
-  if (token) {
-    headers.append("Authorization", `Bearer ${token}`);
-  }
-
   const executeRequest = async () => {
     try {
       dispatch({ type: "loading" });
+
+      const token = localStorage.getItem("_t");
+
+      // Short-circuit when the token is not available
+      if (fetchProtectedOnly && !token) {
+        return dispatch({ type: 'error', payload: new Error('Unable to perform operation. Reason: unauthenticated.') })
+      }
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`
+      }
 
       const res = await client.execute(path, {
         method,

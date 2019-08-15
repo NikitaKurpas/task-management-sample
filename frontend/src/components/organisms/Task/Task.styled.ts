@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import AdorableAvatar from "../Avatar/AdorableAvatar";
-import { padding } from "../../utils/css";
-import IconButton from "../IconButton/IconButton";
-import { theme } from "../theme";
+import AdorableAvatar from "../../atoms/Avatar/AdorableAvatar";
+import { padding } from "../../../utils/css";
+import IconButton from "../../atoms/IconButton/IconButton";
+import { theme } from "../../../theme";
 import { darken } from 'polished'
 
 export const Container = styled.div`

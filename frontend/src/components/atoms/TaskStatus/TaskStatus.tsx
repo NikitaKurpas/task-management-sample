@@ -1,8 +1,8 @@
 import React from "react";
-import { TaskStatus as TaskStatusEnum } from "../../../common/types/common";
-import capitalize from "../../utils/capitalize";
+import { TaskStatus as TaskStatusEnum } from "../../../../../common/types/common";
+import capitalize from "../../../utils/capitalize";
 import styled from "styled-components";
-import { theme } from '../theme'
+import { theme } from '../../../theme'
 
 const stateToColor: {
   background: Record<TaskStatusEnum, string>;

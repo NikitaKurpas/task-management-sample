@@ -1,6 +1,6 @@
 import React from "react";
-import TaskStatus from "../components/TaskStatus/TaskStatus";
-import TaskItem from "../components/TaskList/TaskItem";
+import TaskStatus from "../src/components/atoms/TaskStatus/TaskStatus";
+import Task from "../src/components/organisms/Task/Task";
 import styled from "styled-components";
 import { ITask, IUser } from '../../common/types/common'
 
@@ -37,7 +37,7 @@ const task: ITask = {
   updatedAt: new Date(),
 }
 
-const TaskItemWrapper = styled(TaskItem)`
+const TaskItemWrapper = styled(Task)`
   margin-bottom: 20px;
 `
 

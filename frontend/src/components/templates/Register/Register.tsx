@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
-import { useApiWrite } from "../API/APIWriteRequest";
+import { useApiWrite } from "../../../containers/API/APIWriteRequest";
 import RegisterView from "./RegisterView";
 import Router from "next/router";
-import { useAuth } from "../Auth/Auth";
+import { useAuth } from "../../../containers/Auth/Auth";
 
 const Register: React.FunctionComponent = () => {
   const [register, { loading, error }] = useApiWrite<

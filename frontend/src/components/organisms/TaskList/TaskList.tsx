@@ -1,7 +1,7 @@
 import React from "react";
-import { useApiRead } from '../API/APIReadRequest'
-import { ITask } from '../../../common/types/common'
-import { useAuth } from '../Auth/Auth'
+import { useApiRead } from '../../../containers/API/APIReadRequest'
+import { ITask } from '../../../../../common/types/common'
+import { useAuth } from '../../../containers/Auth/Auth'
 import Router from 'next/router'
 
 export const TaskListView: React.FunctionComponent<{

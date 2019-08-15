@@ -1,13 +1,13 @@
 import React from "react";
 import App, { Container } from "next/app";
 import Head from "next/head";
-import { APIClient, APIClientProvider } from "../components/API/APIClient";
-import Layout from "../components/Layout/Layout";
-import { AuthProvider } from "../components/Auth/Auth";
+import { APIClient, APIClientProvider } from "../src/containers/API/APIClient";
+import Layout from "../src/components/templates/Layout/Layout";
+import { AuthProvider } from "../src/containers/Auth/Auth";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-*,
+  *,
   *::before,
   *::after {
     box-sizing: border-box;

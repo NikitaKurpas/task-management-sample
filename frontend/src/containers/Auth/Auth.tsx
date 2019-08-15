@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState
 } from "react";
-import { IJwtTokenPayload, IUser } from "../../../common/types/common";
+import { IJwtTokenPayload, IUser } from "../../../../common/types/common";
 import { useApiRead } from "../API/APIReadRequest";
 import Router from "next/router";
 import jwtDecode from 'jwt-decode';

@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import { useApiWrite } from "../API/APIWriteRequest";
-import { ITokenResponse } from "../../../common/types/common";
+import { useApiWrite } from "../../../containers/API/APIWriteRequest";
+import { ITokenResponse } from "../../../../../common/types/common";
 import Router from "next/router";
 import LoginView from "./LoginView";
-import { useAuth } from '../Auth/Auth'
+import { useAuth } from '../../../containers/Auth/Auth'
 
 const Login: React.FunctionComponent = () => {
   const [login, { data, loading, error: networkError }] = useApiWrite<

@@ -1,5 +1,5 @@
 import Router from "next/router";
-import { IErrorResponse } from "../../../common/types/common";
+import { IErrorResponse } from "../../../../common/types/common";
 
 type Dispatch = (action: { type: "error"; payload: Error }) => any;
 

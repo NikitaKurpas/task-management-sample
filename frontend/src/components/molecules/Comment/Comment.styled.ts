@@ -8,6 +8,7 @@ export const UserAvatar = styled(AdorableAvatar)`
   height: 40px;
   width: 40px;
   margin-right: 20px;
+  flex-shrink: 0;
 `;
 
 export const Container = styled.div`

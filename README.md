@@ -69,9 +69,9 @@ npm run test
 
 ## Folder structure
 
-- `/fronted` - contains project for the frontend
-- `/backend` - contains project for the backend
-- `/proxy` - contains Nginx configuration
+- `/fronted` - contains code for the frontend
+- `/backend` - contains code for the backend
+- `/proxy` - contains Nginx reverse proxy configuration
 
 ## REST API
 
@@ -112,3 +112,5 @@ npm run test
 <br>
 
 You can find some of my other projects here: https://github.com/ethericlab 
+
+Feel free to reach me at: https://www.linkedin.com/in/nikita-kurpas/

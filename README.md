@@ -15,6 +15,7 @@ A sample task management application written in Next.js (Frontend) and Nest.js (
 - Node.js
 - [Next.js](https://nextjs.org/)
 - React
+- Styled Components
 - [Nest.js](https://nestjs.com/)
 - PostgreSQL
 

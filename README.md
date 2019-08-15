@@ -3,6 +3,11 @@
 ### [WIP]
 A sample task management application written in Next.js (Frontend) and Nest.js (Backend)
 
+<img width="700" alt="Tasks" src="https://user-images.githubusercontent.com/2844046/63120322-6022a080-bfa2-11e9-824b-58cffc12c32b.png" >
+
+<img width="700" alt="Comments" src="https://user-images.githubusercontent.com/2844046/63120664-02db1f00-bfa3-11e9-865f-0d792f52fd04.png">
+
+
 ## Used technologies
 
 - Docker, Docker Compose
@@ -10,6 +15,7 @@ A sample task management application written in Next.js (Frontend) and Nest.js (
 - Node.js
 - [Next.js](https://nextjs.org/)
 - React
+- Styled Components
 - [Nest.js](https://nestjs.com/)
 - PostgreSQL
 

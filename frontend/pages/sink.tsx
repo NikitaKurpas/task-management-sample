@@ -2,7 +2,7 @@ import React from "react";
 import TaskStatus from "../src/components/atoms/TaskStatus/TaskStatus";
 import Task from "../src/components/organisms/Task/Task";
 import styled from "styled-components";
-import { ITask, IUser } from '../../common/types/common'
+import { IComment, ITask, IUser } from '../../common/types/common'
 import ErrorMessage from '../src/components/atoms/ErrorMessage/ErrorMessage'
 import Loader from '../src/components/atoms/Loader/Loader'
 
@@ -28,12 +28,44 @@ const user2: IUser = {
   createdAt: new Date(),
 }
 
+const comment1: IComment = {
+  id: '1',
+  text: 'A falsis, nix rusticus epos.',
+  createdBy: user1,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}
+
+const comment2: IComment = {
+  id: '1',
+  text: 'Urias favere in moscua! Est varius decor, cesaris.',
+  createdBy: user2,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}
+
+const comment3: IComment = {
+  id: '2',
+  text: 'Pol, a bene medicina, grandis nuclear vexatum iacere! Manducare una ducunt ad flavum nuclear vexatum iacere.',
+  createdBy: user2,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}
+
+const comment4: IComment = {
+  id: '3',
+  text: 'Sunt mortemes prensionem salvus, fortis byssuses. Solitudo superbus urbs est. Vae, talis apolloniates! Cur zeta mori? Heu, spatii! Nutrix albus abaculus est. Flavum, brevis galataes vix imperium de audax, bassus cedrium.',
+  createdBy: user2,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}
+
 const task: ITask = {
   id: '1',
   description: "Lorem ipsum dolor sit amet",
   status: "in progress",
   assignees: [user1],
-  comments: [],
+  comments: [comment1, comment2, comment3, comment4, comment2, comment1],
   createdAt: new Date(),
   createdBy: user1,
   updatedAt: new Date(),

@@ -17,7 +17,7 @@ const DropdownContainer = styled.div.attrs<{ open: boolean }>(({ open }) => ({
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 100;
+  z-index: 300;
   display: flex;
   flex-direction: column;
   background: #fff;

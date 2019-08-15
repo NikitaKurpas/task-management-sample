@@ -1,18 +1,25 @@
 import styled from "styled-components";
 import AdorableAvatar from "../../atoms/Avatar/AdorableAvatar";
-import { padding } from "../../../utils/css";
 import IconButton from "../../atoms/IconButton/IconButton";
 import { theme } from "../../../theme";
-import { darken } from 'polished'
+import { darken } from "polished";
 
-export const Container = styled.div`
-  position: relative;
+export const Wrapper = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
+  height: 40px;
+  cursor: pointer;
+  background: #fff;
+`
+
+export const Container = styled.div.attrs<{ expanded: boolean }>(props => ({
+  style: { zIndex: props.expanded ? 200 : "unset" }
+}))<{ expanded: boolean }>`
+  position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: 40px;
-  cursor: pointer;
 
   &::after {
     content: "";
@@ -20,6 +27,8 @@ export const Container = styled.div`
     z-index: -1;
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
     transition: opacity 0.2s ease-in-out;
     opacity: 0;
@@ -30,8 +39,18 @@ export const Container = styled.div`
   }
 `;
 
+export const CommentContainer = styled.div`
+  width: 100%;
+  height: 300px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 200;
+  background: #fff;
+`;
+
 export const Text = styled.p`
-  ${padding(3, "h")};
+  padding: 0 15px;
   font-size: 12px;
   color: black;
   margin: 0;
@@ -57,16 +76,18 @@ export const UserAvatar = styled(AdorableAvatar)`
   }
 `;
 
-export const ArchiveButton = styled(IconButton).attrs({ name: "archive" })<Omit<typeof IconButton, 'name'>>`
+export const ArchiveButton = styled(IconButton).attrs({ name: "archive" })<
+  Omit<typeof IconButton, "name">
+>`
   background: ${theme.colors.lightRed};
   color: ${theme.colors.red};
-  
+
   &:hover {
     background: ${darken(0.1, theme.colors.lightRed)};
   }
 `;
 
-export const DeleteButton = styled(ArchiveButton).attrs({ name: 'delete' })``
+export const DeleteButton = styled(ArchiveButton).attrs({ name: "delete" })``;
 
 export const TaskStatusButton = styled.button`
   border: none;
@@ -75,7 +96,7 @@ export const TaskStatusButton = styled.button`
   margin: 0;
   padding: 0;
   position: relative;
-  
+
   &::after {
     content: "";
     position: absolute;
@@ -91,4 +112,4 @@ export const TaskStatusButton = styled.button`
   &:hover::after {
     opacity: 0.1;
   }
-`
+`;

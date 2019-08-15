@@ -8,6 +8,7 @@ import DropdownMenu, {
 } from "../DropdownMenu/DropdownMenu";
 import TaskStatus from "../../atoms/TaskStatus/TaskStatus";
 import { TaskStatusButton } from "../../organisms/Task/Task.styled";
+import { preventPropagation } from '../../../utils/preventPropagation'
 
 export const TaskStatusControl: React.FunctionComponent<{ task: ITask }> = ({
   task
@@ -30,14 +31,14 @@ export const TaskStatusControl: React.FunctionComponent<{ task: ITask }> = ({
     <DropdownMenu
       ref={dropdownRef}
       toggle={
-        <TaskStatusButton onClick={() => setOpen(open => !open)}>
+        <TaskStatusButton onClick={preventPropagation(() => setOpen(open => !open))}>
           <TaskStatus status={task.status} />
         </TaskStatusButton>
       }
       open={open}
     >
       {availableTransitions.map(transition => (
-        <TaskStatusButton key={transition} onClick={() => setOpen(false)}>
+        <TaskStatusButton key={transition} onClick={preventPropagation(() => setOpen(false))}>
           <TaskStatus status={transition} />
         </TaskStatusButton>
       ))}

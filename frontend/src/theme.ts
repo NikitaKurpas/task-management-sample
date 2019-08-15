@@ -9,6 +9,6 @@ export const theme = {
     pink: '#FDEEE8',
     darkPink: '#D6A999',
     lightRed: '#FCCFCF',
-    red: '#ED8282'
+    red: '#eb6a6a'
   }
 }

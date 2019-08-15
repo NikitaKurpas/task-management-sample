@@ -3,6 +3,8 @@ import TaskStatus from "../src/components/atoms/TaskStatus/TaskStatus";
 import Task from "../src/components/organisms/Task/Task";
 import styled from "styled-components";
 import { ITask, IUser } from '../../common/types/common'
+import ErrorMessage from '../src/components/atoms/ErrorMessage/ErrorMessage'
+import Loader from '../src/components/atoms/Loader/Loader'
 
 const SectionContainer = styled.div`
   display: flex;
@@ -55,6 +57,14 @@ const ComponentSinkPage = () => (
       <TaskItemWrapper task={{ ...task, status: 'new', assignees: [user1, user2], createdBy: user2 }}/>
       <TaskItemWrapper task={{ ...task, status: 'completed', assignees: [], description: 'Cum abaculus ridetis, omnes gemnaes desiderium lotus, ferox vigiles. Accelerare interdum ducunt ad regius nuclear vexatum iacere.' }}/>
       <TaskItemWrapper task={{ ...task, status: 'archived', assignees: [], description: 'Ubi est emeritis tata?' }}/>
+    </SectionContainer>
+
+    <SectionContainer style={{ flexDirection: 'column' }}>
+      <ErrorMessage error={'Resurrection is the only reincarnation, the only guarantee of surrender.'} />
+    </SectionContainer>
+
+    <SectionContainer style={{ flexDirection: 'column' }}>
+      <Loader />
     </SectionContainer>
   </div>
 );

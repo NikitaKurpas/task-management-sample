@@ -41,7 +41,7 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.2.25",
     "uniqid": "^5.0.3",
     "url-join": "^4.0.1"
   },
